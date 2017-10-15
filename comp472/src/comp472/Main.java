@@ -10,16 +10,16 @@ public class Main {
 	private int row = 5;
 	private int col = 9;
 	private char[][] board;
-	private int redPeice;
-	private int greenPeice;
+	private int redPiece;
+	private int greenPiece;
 	private char move;
 	
 	// ALWAYS TURN
 	public Main(){
 		
 	board = new char [row][col];
-	redPeice = 22;
-	greenPeice = 22;
+	redPiece = 22;
+	greenPiece = 22;
 	move = 'R';
 	
 	
@@ -50,6 +50,7 @@ public class Main {
 	}
 	
 	public void printBoard(){
+		System.out.println("-------------------");
 		System.out.println("  0 1 2 3 4 5 6 7 8");
 		for(int i = 0; i< row; i++){
 			  System.out.print((i) + " ");
@@ -75,9 +76,9 @@ public class Main {
 		if(Math.abs(xTo)-xOri == 2){
 			board[(xOri+xTo)/2][(yOri+yTo)/2]='_';
 			if(move == 'R')
-				redPeice--;
+				redPiece--;
 				else
-					greenPeice--;
+					greenPiece--;
 				
 				
 			}
@@ -87,17 +88,17 @@ public class Main {
 		
 		Scanner k = new Scanner(System.in);
 		 if( move == 'R')
-			 System.out.println("Red");
+			 System.out.println("\nRed's turn");
 		 else
-			 System.out.println("Green");
+			 System.out.println("\nGreen's turn");
 		 
 		 
 		 boolean moved = false;
 		 
 		 while(!moved){
-			System.out.println("Enter peice you at now(ie x = 2, y =5. so enter 25");
+			System.out.println("Enter Piece that you are at now(ie x = 2, y =5. so enter 25)");
 			 int moveFrom = k.nextInt();
-				System.out.println("Enter peice you move to(ie x = 2, y =5. so enter 25");
+				System.out.println("Enter Piece you want to move to(ie x = 2, y =5. so enter 25)");
 			 int moveTo = k.nextInt();
 			 
 			 makeMove(moveFrom,moveTo);
@@ -116,7 +117,7 @@ public class Main {
 	}
 	
 	 public boolean gameOver() {
-			return (redPeice == 0 || greenPeice == 0);
+			return (redPiece == 0 || greenPiece == 0);
 		    }
 	
 	
