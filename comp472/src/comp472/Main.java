@@ -111,7 +111,7 @@ public class Main {
 		 if (move == 'R')
 			    move = 'G';
 			else
-			    move = 'G';
+			    move = 'R';
 		    
 		 
 	}
