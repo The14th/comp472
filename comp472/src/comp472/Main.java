@@ -66,13 +66,15 @@ public class Main {
 	public void makeMove(int from, int to){
 		//Take first digit and then last digit
 		int xOri = from/10;
+	//	System.out.println(xOri);
 		int yOri = from%10;
+	//	System.out.println(yOri);
 		
 		int xTo = to/10;
 		int yTo = to%10;
 		
 		board[xOri][yOri] = '_';
-		board[xTo][yTo] = move;
+		board[xTo][yTo] = move;/*
 		if(Math.abs(xTo)-xOri == 2){
 			board[(xOri+xTo)/2][(yOri+yTo)/2]='_';
 			if(move == 'R')
@@ -81,7 +83,7 @@ public class Main {
 					greenPiece--;
 				
 				
-			}
+			}*/
 		}
 	
 	public void moving() throws IOException{
@@ -96,14 +98,19 @@ public class Main {
 		 boolean moved = false;
 		 
 		 while(!moved){
-			System.out.println("Enter Piece that you are at now(ie x = 2, y =5. so enter 25)");
+			System.out.println("Enter Piece that you are at now(ie y = 2, x =5. so enter 25)");
 			 int moveFrom = k.nextInt();
-				System.out.println("Enter Piece you want to move to(ie x = 2, y =5. so enter 25)");
+				System.out.println("Enter Piece you want to move to(ie y = 2, x =5. so enter 25)");
 			 int moveTo = k.nextInt();
 			 
+			 if(validate(moveFrom,moveTo)){
 			 makeMove(moveFrom,moveTo);
 			 moved = true;
-			 
+			 }/*
+			 else{
+				 System.out.println("No go");
+			 }
+			 */
 			 
 		 }
 		 
@@ -120,7 +127,36 @@ public class Main {
 			return (redPiece == 0 || greenPiece == 0);
 		    }
 	
+	public void eating(){
+		
+	}
 	
+	public boolean validate(int from, int to){
+		int xOri = from/10;
+		int yOri = from%10;
+		System.out.println( "Xori "+xOri+ " "+ "Yori "+yOri);
+		
+		int xTo = to/10;
+		int yTo = to%10;
+		System.out.println("xTo "+ xTo+ " yTo "+ yTo);
+		
+	
+		
+		//out of bounds things
+		if(xOri < 0 || xOri >4 || yOri < 0 || yOri >8 ||
+		xTo < 0 || xTo > 4	|| yTo < 0 || yTo > 8	){
+			System.out.println("Over");
+			return false;
+		}
+		//move only one
+		else if( board[xTo][yTo] != '_' ){
+			System.out.println("Already filled fam");
+			return false;
+		}
+		
+		
+		return true;
+	}
 
 	public static void main(String[] args) throws IOException {
 		
