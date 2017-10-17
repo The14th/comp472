@@ -1,6 +1,8 @@
 package comp472;
 
-//ASSUME PERFECT USER ATM
+// Y AND X ARE MIXED UP
+// Y IS HORIZONTAL AND X IS VERTICAL
+
 
 import java.io.*;
 import java.util.*;
@@ -29,24 +31,30 @@ public class Main {
 		}
 	}
 	
-	for(int j =0; j<col; j++){
-	board[0][j] = 'R';
-	board[1][j] = 'R';
-	board[2][5]= 'R';
-	board[2][6]= 'R';
-	board[2][7]= 'R';
-	board[2][8]= 'R';
-	//}
-	
-	//for(int i =0; i<col; i++){
-		board[3][j] = 'G';
-		board[4][j] = 'G';
-		board[2][0]= 'G';
-		board[2][1]= 'G';
-		board[2][2]= 'G';
-		board[2][3]= 'G';
-		//}
-	}
+		for (int j = 0; j < col; j++) {
+			/*
+			board[0][j] = 'R';
+			board[1][j] = 'R';
+			board[2][5] = 'R';
+			board[2][6] = 'R';
+			board[2][7] = 'R';
+			board[2][8] = 'R';
+
+			board[3][j] = 'G';
+			board[4][j] = 'G';
+			board[2][0] = 'G';
+			board[2][1] = 'G';
+			board[2][2] = 'G';
+			board[2][3] = 'G';
+			
+			*/
+			//Testing
+			board[2][5] = 'R';
+			board[2][1] = 'G';
+			board[2][2] = 'G';
+			board[2][3] = 'G';
+
+		}
 	}
 	
 	public void printBoard(){
@@ -66,24 +74,23 @@ public class Main {
 	public void makeMove(int from, int to){
 		//Take first digit and then last digit
 		int xOri = from/10;
-	//	System.out.println(xOri);
 		int yOri = from%10;
-	//	System.out.println(yOri);
 		
 		int xTo = to/10;
 		int yTo = to%10;
 		
 		board[xOri][yOri] = '_';
-		board[xTo][yTo] = move;/*
+		board[xTo][yTo] = move;
+		/*
 		if(Math.abs(xTo)-xOri == 2){
 			board[(xOri+xTo)/2][(yOri+yTo)/2]='_';
-			if(move == 'R')
+			if(move == 'R'){
 				redPiece--;
-				else
+			}else
 					greenPiece--;
+		*/
 				
-				
-			}*/
+			
 		}
 	
 	public void moving() throws IOException{
@@ -104,7 +111,9 @@ public class Main {
 			 int moveTo = k.nextInt();
 			 
 			 if(validate(moveFrom,moveTo)){
-			 makeMove(moveFrom,moveTo);
+			eating(moveFrom,moveTo); 
+			makeMove(moveFrom,moveTo);
+			
 			 moved = true;
 			 }/*
 			 else{
@@ -127,18 +136,36 @@ public class Main {
 			return (redPiece == 0 || greenPiece == 0);
 		    }
 	
-	public void eating(){
+	public void eating(int from, int to){
+		int xOri = from/10;
+		int yOri = from%10;
+
+		int xTo = to/10;
+		int yTo = to%10;
+		System.out.println("Hello");
+		System.out.println("Xto "+xTo+ "and "+yTo);
+		// check next peice
+		//while loop to eat pecies in a row or column or diagonal until cant
+		if(move == 'R' && board[xTo-1][yTo] =='G' || board[xTo][yTo-1] =='G' ||board[xTo-1][yTo-1] =='G'){
+
+				board[xTo][yTo-1] = '_';
+				System.out.println("Lost green");
+				greenPiece--;
+			
+		}
+	
+		
 		
 	}
 	
 	public boolean validate(int from, int to){
 		int xOri = from/10;
 		int yOri = from%10;
-		System.out.println( "Xori "+xOri+ " "+ "Yori "+yOri);
+		//System.out.println( "Xori "+xOri+ " "+ "Yori "+yOri);
 		
 		int xTo = to/10;
 		int yTo = to%10;
-		System.out.println("xTo "+ xTo+ " yTo "+ yTo);
+		//System.out.println("xTo "+ xTo+ " yTo "+ yTo);
 		
 	
 		
@@ -166,6 +193,8 @@ public class Main {
 		while(!n.gameOver()){
 			n.moving();
 			n.printBoard();
+			System.out.println(n.greenPiece);
+			System.out.println(n.redPiece);
 		}
 		
 	}
