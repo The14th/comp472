@@ -1,9 +1,5 @@
 package comp472;
 
-// Y AND X ARE MIXED UP
-// Y IS HORIZONTAL AND X IS VERTICAL
-
-
 import java.io.*;
 import java.util.*;
 
@@ -11,6 +7,7 @@ public class Main {
 	
 	private int row = 5;
 	private int col = 9;
+	private int defense = 0;
 	private char[][] board;
 	private int redPiece;
 	private int greenPiece;
@@ -32,7 +29,7 @@ public class Main {
 	}
 	
 		for (int j = 0; j < col; j++) {
-			/*
+			
 			board[0][j] = 'R';
 			board[1][j] = 'R';
 			board[2][5] = 'R';
@@ -47,20 +44,23 @@ public class Main {
 			board[2][2] = 'G';
 			board[2][3] = 'G';
 			
-			*/
+			
+			/*
 			//Testing
-			board[0][3] = 'G';
+			board[0][2] = 'G';
 			board[0][7] = 'G';
-			board[1][5] = 'R';
+			board[1][3] = 'G';
+			board[1][5] = 'G';
+			board[2][4] = 'R';
 			board[2][5] = 'R';
 			board[0][5] = 'G';
 			board[2][2] = 'G';
 			board[2][3] = 'G';
-			board[2][7] = 'G';
+			//board[2][7] = 'G';
 			board[4][3] = 'G';
-			board[4][5] = 'G';
-			board[4][7] = 'G';
-
+			//board[4][5] = 'G';
+			//board[4][7] = 'G';
+			 */
 		}
 	}
 	
@@ -90,11 +90,10 @@ public class Main {
 		board[yOri][xOri] = '_';
 		board[yTo][xTo] = move;
 
-				
-			
 		}
 	
 	public void moving() throws IOException{
+		int over = 0;
 		
 		Scanner k = new Scanner(System.in);
 		 if( move == 'R')
@@ -102,38 +101,87 @@ public class Main {
 		 else
 			 System.out.println("Green's turn:\n");
 		 
-		 
 		 boolean moved = false;
-		 
+		 		 
 		 while(!moved){
+
 			System.out.println("(FROM)Enter Piece that you are at now(ie y = 2, x =5. so enter 25)");
-			 int moveFrom = k.nextInt();
-				System.out.println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)");
-			 int moveTo = k.nextInt();
+			 
+			 while (!k.hasNextInt()){ 
+				 System.out.println("(FROM)Enter Piece that you are at now(ie y = 2, x =5. so enter 25)");
+				 k.next();
+				 over++;
+				 if (over >= 2)
+					 gameOver(1);
+			 }
+			
+			int moveFrom = k.nextInt();
+			
+			System.out.println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)");
+			while (!k.hasNextInt()){ 
+				 System.out.println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)");
+				 k.next();
+				 over++;
+				 if (over >= 2)
+					 gameOver(1);
+			 }
+			int moveTo = k.nextInt();
 			 
 			 if(validate(moveFrom,moveTo, move)){
 				eating(moveFrom,moveTo, move); 
 				makeMove(moveFrom,moveTo);
 				
 				 moved = true;
+				 break;
 			 }
+			 else{
+				 over++;
+			 }
+			 if (over >= 2)
+				 gameOver(1);
 			 
 		 }
-		 
 		 
 		 if (move == 'R')
 			    move = 'G';
 			else
 			    move = 'R';
-		    
-		 
+		   		 
 	}
 	
-	 public boolean gameOver() {
-			return (redPiece == 0 || greenPiece == 0);
-		    }
+	 public boolean gameOver(int forced) {
+		 
+		 	if (forced == 1){
+		 		System.out.println("\nToo many illegal moves");
+				 if( move == 'R')
+					 System.out.println("GREEN WINS BY DEFAULT");
+				 else
+					 System.out.println("RED WINS BY DEFAULT");
+				 System.out.println("GAME OVER");
+		 		System.exit(0);
+		 	}
+		 	
+		 	if (forced == 2){
+		 		System.out.println("TOO MANY DEFENSIVE MOVES: DRAW");
+		 		System.out.println("GAME OVER");
+		 		System.exit(0);
+		 	}
+		 	if(redPiece == 0) {
+		 		System.out.println("GREEN WINS");
+		 		System.out.println("GAME OVER");
+		 	}
+		 		
+		 		
+		 	if (greenPiece == 0){
+		 		System.out.println("RED WINS");
+		 		System.out.println("GAME OVER");
+		 	}
+		 	
+		 	return false;
+	 }
 	
 	public void eating(int from, int to, char color){
+		int deathC = 0;
 		char enemy = 'a';
 		if (color == 'G'){
 			enemy = 'R';
@@ -143,6 +191,8 @@ public class Main {
 			enemy = 'G';
 		}
 		boolean stop = false;
+		boolean forward = false;
+		boolean def = true;
 		int directionY = 0; //-1: up/1: down 
 		int directionX = 0; //-1: left/1: right;
 		int yOri = from/10;
@@ -152,8 +202,6 @@ public class Main {
 
 		int yTo = to/10;
 		int xTo = to%10;
-		System.out.println("Hello");
-		System.out.println("Yto "+yTo+ " and "+xTo);
 		
 		if (yTo > yOri){
 			directionY = 1;
@@ -169,36 +217,70 @@ public class Main {
 		}
 		yAttack = yTo+directionY;
 		xAttack = xTo+directionX;
+		//forward attack
 		while(!stop){
 			if (!(yAttack < 0 || yAttack > 4 ||xAttack < 0 || xAttack > 8)){
 				if(board[yAttack][xAttack] == enemy){
+					deathC++;
+					forward = true;
+					def = false;
 					board[yAttack][xAttack] = '_';
 				}
 				else{
 					stop = true;
-					System.out.println("finished eating");
 				}
 				yAttack += directionY;
 				xAttack += directionX;
 			}
 			else{
 				stop = true;
-				System.out.println("eat out of bound");
 			}
 		}
-		/*
-		// check next Piece
-		//while loop to eat pieces in a row or column or diagonal until cant
-		if(move == 'R' && (board[yTo-1][xTo] =='G' || board[yTo][xTo-1] =='G' ||board[yTo-1][xTo-1] =='G')){
-
-				board[yTo][xTo-1] = '_';
-				System.out.println("Lost green");
-				greenPiece--;
-			
-		}*/
-	
+		//backwards attack
+		stop = false;
+		directionX = -directionX;
+		directionY = -directionY;
+		yAttack = yOri+directionY;
+		xAttack = xOri+directionX;
 		
+		if (forward == false){
+			while(!stop){
+				if (!(yAttack < 0 || yAttack > 4 ||xAttack < 0 || xAttack > 8)){
+					if(board[yAttack][xAttack] == enemy){
+						deathC++;
+						def = false;
+						board[yAttack][xAttack] = '_';
+					}
+					else{
+						stop = true;
+					}
+					yAttack += directionY;
+					xAttack += directionX;
+				}
+				else{
+					stop = true;
+				}
+			}
+		}
+		if (enemy == 'G'){
+			greenPiece -= deathC;
+		}
+		else{
+			redPiece -= deathC;
+		}
 		
+		if (def){
+			defense++;
+			System.out.println("Defensive move");
+		}
+		else{
+			defense = 0;
+		}
+		System.out.println("Finished attack/defense phase");
+		
+		if(defense >= 10){
+			gameOver(2);
+		}
 	}
 	
 	public boolean validate(int from, int to, char color){
@@ -207,8 +289,6 @@ public class Main {
 		
 		int yTo = to/10;
 		int xTo = to%10;
-
-
 
 		//out of bounds things
 		if(yOri < 0 || yOri >4 || xOri < 0 || xOri >8 ||
@@ -226,15 +306,13 @@ public class Main {
 			System.out.println("You must move");
 			return false;
 		}
-		//move only one
 		else if( board[yTo][xTo] != '_' ){
-			System.out.println("Already filled fam");
+			System.out.println("Tile already filled");
 			return false;
 		}
 
 		if (((yOri+xOri) & 1) == 0){
 			//even is black
-			System.out.println("BLACK");
 			if (yTo == yOri + 1 || yTo == yOri - 1 || xTo == xOri + 1 || xTo == xOri - 1){
 				return true;
 			}
@@ -245,19 +323,15 @@ public class Main {
 		}
 		else{
 			//odd is white
-			System.out.println("WHITE");
 			if (((yTo == yOri + 1 || yTo == yOri - 1) && xTo == xOri) || ((xTo == xOri + 1 || xTo == xOri - 1) && yTo == yOri)){
 				return true;
 			}
 			else{
-				System.out.println("Too far");
+				System.out.println("White may only move horizontally or vertically by one space");
 				return false;
 			}
 			
 		}	
-		
-		
-		//return true;
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -265,11 +339,11 @@ public class Main {
 		Main n = new Main();
 		n.printBoard();
 		
-		while(!n.gameOver()){
+		while(!n.gameOver(0)){
 			n.moving();
 			n.printBoard();
-			//System.out.println(n.greenPiece);
-			//System.out.println(n.redPiece);
+			System.out.println(n.greenPiece);
+			System.out.println(n.redPiece);
 		}
 		
 	}
