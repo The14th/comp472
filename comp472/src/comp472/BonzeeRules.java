@@ -19,7 +19,7 @@ public class BonzeeRules {
 		board = new char[row][col];
 		redPiece = 22;
 		greenPiece = 22;
-		turn = 'R';
+		turn = 'G';
 
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < col; j++) {
@@ -29,14 +29,14 @@ public class BonzeeRules {
 
 		for (int j = 0; j < col; j++) {
 			// Main Board
-			/*
-			 * board[0][j] = 'R'; board[1][j] = 'R'; board[2][5] = 'R';
-			 * board[2][6] = 'R'; board[2][7] = 'R'; board[2][8] = 'R';
-			 * 
-			 * board[3][j] = 'G'; board[4][j] = 'G'; board[2][0] = 'G';
-			 * board[2][1] = 'G'; board[2][2] = 'G'; board[2][3] = 'G';
-			 */
-
+			
+			  board[0][j] = 'R'; board[1][j] = 'R'; board[2][5] = 'R';
+			 board[2][6] = 'R'; board[2][7] = 'R'; board[2][8] = 'R';
+			  
+			 board[3][j] = 'G'; board[4][j] = 'G'; board[2][0] = 'G';
+			 board[2][1] = 'G'; board[2][2] = 'G'; board[2][3] = 'G';
+			 
+/*
 			// Testing
 			board[0][2] = 'G';
 			board[0][7] = 'G';
@@ -51,7 +51,7 @@ public class BonzeeRules {
 			board[4][3] = 'G';
 			board[4][5] = 'G';
 			board[4][7] = 'G';
-
+*/
 		}
 	}
 	
@@ -298,6 +298,8 @@ public class BonzeeRules {
 
 		return false;
 	}
+	
+
 	
 	//Prints board
 	public void printBoard() {

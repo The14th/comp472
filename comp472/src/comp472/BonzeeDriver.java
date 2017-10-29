@@ -9,6 +9,12 @@ public class BonzeeDriver {
 
 		while (!n.gameOver(0)) {
 			n.makeMove();
+			/*
+			 n.miniMax(..)
+			 n.makeMove(n.compMove) 
+			  
+			 
+			 */
 			n.printBoard();
 			System.out.println("Green Pieces left: " +n.greenPiece);
 			System.out.println("Red Pieces left: "+n.redPiece);
