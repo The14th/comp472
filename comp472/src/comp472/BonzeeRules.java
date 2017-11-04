@@ -29,29 +29,30 @@ public class BonzeeRules {
 
 		for (int j = 0; j < col; j++) {
 			// Main Board
-			
+			/*
 			  board[0][j] = 'R'; board[1][j] = 'R'; board[2][5] = 'R';
 			 board[2][6] = 'R'; board[2][7] = 'R'; board[2][8] = 'R';
 			  
 			 board[3][j] = 'G'; board[4][j] = 'G'; board[2][0] = 'G';
 			 board[2][1] = 'G'; board[2][2] = 'G'; board[2][3] = 'G';
 			 
-/*
+*/
 			// Testing
 			board[0][2] = 'G';
 			board[0][7] = 'G';
 			board[1][3] = 'G';
-			board[1][5] = 'G';
-			board[2][4] = 'R';
+			//board[1][5] = 'G';
+			//board[2][4] = 'R';
 			board[2][5] = 'R';
-			board[0][5] = 'G';
+		    //	board[0][5] = 'G';
 			board[2][2] = 'G';
 			board[2][3] = 'G';
+			board[3][5] = 'G';
 			board[2][7] = 'G';
 			board[4][3] = 'G';
 			board[4][5] = 'G';
 			board[4][7] = 'G';
-*/
+
 		}
 	}
 	
@@ -68,6 +69,197 @@ public class BonzeeRules {
 		board[yTo][xTo] = turn;
 
 	}
+	
+	//iterate through board, or all G or R peices and check if you can move
+		//Not sure if need this 
+		/*
+		public void pickMove() {
+			for (int i = 0; i < row; i++) {
+				for (int j = 0; j < col; j++) {
+					
+					int a = Integer.parseInt(i+""+j);
+					System.out.println(a);
+					validateMove(a,a+1,turn);
+					validateMove(a+1,a,turn);
+					validateMove(a,a-1,turn);
+					validateMove(a-1,a,turn);
+					//can create an array of moves that are good
+				}
+
+			}
+		}
+		
+		*/
+		
+		//NEED TO LOOP THIS FOR ALL POSITIONS
+		//This method checks all possible moves from a position and determines if IT can move and 
+		// if it can attack it will take the max pieces it can eat and move that way
+		public void move(int from, int to, char turn) {
+
+			// Not sure if I need these for this method
+			int yOri = from / 10;
+			int xOri = from % 10;
+			int yTo = to / 10;
+			int xTo = to % 10;
+
+			System.out.println("Moving from " + from + " to " + to);
+			System.out.println("Validating possible moves..");
+			System.out.println();
+			// boolean stop = false;
+
+			// UP meaning down
+			int up = from + 10;
+			// DOWN meaning up
+			int down = from - 10;
+			// LEFT
+			int left = from - 1;
+			// RIGHT
+			int right = from + 1;
+
+			if (validateMove(from, up, turn) == false) {
+				System.out.println("No");
+
+			} else {
+				System.out.println("Can move up");
+				checkerM(from, up, turn);
+				System.out.println();
+
+			}
+
+			if (validateMove(from, down, turn) == false) {
+				System.out.println("No");
+
+			} else {
+				System.out.println("Can move down");
+				checkerM(from, down, turn);
+				System.out.println();
+
+			}
+
+			if (validateMove(from, left, turn) == false) {
+				System.out.println("No");
+
+			} else {
+				System.out.println("Can move left");
+				checkerM(from, left, turn);
+				System.out.println();
+
+			}
+
+			if (validateMove(from, right, turn) == false) {
+				System.out.println("No");
+
+			} else {
+				System.out.println("Can move right");
+				checkerM(from, right, turn);
+				System.out.println();
+				;
+
+			}
+			// IF you are here then ALL 4 moves cant happen then move to another
+			// position on the board
+			System.out.println("nothing");
+
+		}
+		// Not to execute move, just count the pieces it can eat
+		public void checkerM(int from, int to, char color) {
+			int deathC = 0;
+			char enemy = 'a';
+			if (color == 'G') {
+				enemy = 'R';
+			} else {
+				enemy = 'G';
+			}
+			boolean stop = false;
+			boolean forward = false;
+			boolean def = true;
+			int directionY = 0; // -1: up/1: down
+			int directionX = 0; // -1: left/1: right;
+			int yOri = from / 10;
+			int xOri = from % 10;
+			int xAttack = 0;
+			int yAttack = 0;
+
+			int yTo = to / 10;
+			int xTo = to % 10;
+
+			if (yTo > yOri) {
+				directionY = 1;
+			} else if (yTo < yOri) {
+				directionY = -1;
+			}
+			if (xTo > xOri) {
+				directionX = 1;
+			} else if (xTo < xOri) {
+				directionX = -1;
+			}
+			yAttack = yTo + directionY;
+			xAttack = xTo + directionX;
+			// forward attack
+			while (!stop) {
+				if (!(yAttack < 0 || yAttack > 4 || xAttack < 0 || xAttack > 8)) {
+					if (board[yAttack][xAttack] == enemy) {
+						deathC++;
+						forward = true;
+						def = false;
+						//board[yAttack][xAttack] = '_';
+					} else {
+						stop = true;
+					}
+					yAttack += directionY;
+					xAttack += directionX;
+				} else {
+					stop = true;
+				}
+			}
+			// backwards attack
+			stop = false;
+			directionX = -directionX;
+			directionY = -directionY;
+			yAttack = yOri + directionY;
+			xAttack = xOri + directionX;
+
+			if (forward == false) {
+				while (!stop) {
+					if (!(yAttack < 0 || yAttack > 4 || xAttack < 0 || xAttack > 8)) {
+						if (board[yAttack][xAttack] == enemy) {
+							deathC++;
+							def = false;
+							//board[yAttack][xAttack] = '_';
+						} else {
+							stop = true;
+						}
+						yAttack += directionY;
+						xAttack += directionX;
+					} else {
+						stop = true;
+					}
+				}
+			}
+			if (enemy == 'G') {
+				
+				System.out.println("Pieces that can be consumed: " +deathC);
+			} else {
+				
+				System.out.println("Pieces that can be consumed: "+deathC);
+			}
+
+			if (def) {
+				defense++;
+				System.out.println("Defensive move");
+			} else {
+				defense = 0;
+			}
+			System.out.println("Finished attack/defense phase");
+
+			if (defense >= 10) {
+				gameOver(2);
+			}
+		}
+		
+	
+	
+	
 	
 	//Intiates the move entered
 	public void makeMove() {
@@ -104,6 +296,10 @@ public class BonzeeRules {
 					gameOver(1);
 			}
 			int moveTo = k.nextInt();
+			
+			//AI MOVE
+			move(moveFrom,moveTo,turn);
+	
 
 			if (validateMove(moveFrom, moveTo, turn)) {
 				attackMove(moveFrom, moveTo, turn);
