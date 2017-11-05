@@ -40,10 +40,12 @@ public class BonzeeRules {
 			 */
 			// Testing
 			board[0][0] = 'G';
-			board[0][2] = 'G';
-			board[0][7] = 'G';
+		//	board[0][2] = 'G';
+		//	board[0][7] = 'G';
+			board[0][2] = 'R';
+			board[0][3] = 'R';
 			board[2][0] = 'R';
-			board[2][2] = 'R';
+		//	board[2][2] = 'R';
 			board[1][5] = 'G';
 			// board[2][4] = 'R';
 			// board[2][5] = 'R';
@@ -142,8 +144,6 @@ public class BonzeeRules {
 
 		}
 
-		// the max is 1 here then it gets reset to 0
-
 		if (validateMove(from, left, turn) == false) {
 			System.out.println("No");
 
@@ -173,8 +173,6 @@ public class BonzeeRules {
 			tempMax = max;
 
 		}
-		// IF you are here then ALL 4 moves cant happen then move to another
-		// position on the board
 
 		System.out.println("Its turn: " + turn);
 		System.out.println(tempMax);
@@ -263,9 +261,9 @@ public class BonzeeRules {
 			max = deathC;
 			System.out.println("Max is : " + max);
 		} else {
-
-			System.out.println("Max from attack method: " + max);
 			max = deathC;
+			System.out.println("Max from attack method: " + max);
+			
 		}
 
 		return max;
