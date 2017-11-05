@@ -275,27 +275,31 @@ public class BonzeeRules {
 
 		while (!moved) {
 
+			String regex = "([A-E]|[a-e])[1-9]";
+			
+			
 			System.out.println("(FROM)Enter Piece that you are at now(ie y = 2, x =5. so enter 25)");
-
-			while (!k.hasNextInt()) {
+			String inputFrom = k.nextLine();
+			while (!(inputFrom.matches(regex))) {
 				System.out.println("(FROM)Enter Piece that you are at now(ie y = 2, x =5. so enter 25)");
-				k.next();
+				inputFrom = k.nextLine();
 				over++;
-				if (over >= 2)
+				if (over >= 1)
 					gameOver(1);
 			}
 
-			int moveFrom = k.nextInt();
-
+			int moveFrom = inputConverter(inputFrom);
+			
 			System.out.println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)");
-			while (!k.hasNextInt()) {
+			String inputTo = k.nextLine();
+			while (!(inputTo.matches(regex))) {
 				System.out.println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)");
-				k.next();
+				inputTo = k.nextLine();
 				over++;
-				if (over >= 2)
+				if (over >= 1)
 					gameOver(1);
 			}
-			int moveTo = k.nextInt();
+			int moveTo = inputConverter(inputTo);
 			
 			//AI MOVE
 			move(moveFrom,moveTo,turn);
@@ -322,6 +326,41 @@ public class BonzeeRules {
 
 	}
 	
+	private int inputConverter(String input) {
+		System.out.println("Raw input: " + input);
+		
+		char rowInp = input.charAt(0);
+		int y = 0;
+		String colInp = ""+input.charAt(1);
+		
+		if (rowInp == 'A' || rowInp == 'a'){
+			y = 0;
+		}
+		if (rowInp == 'B' || rowInp == 'b'){
+			y = 1;
+		}
+		if (rowInp == 'C' || rowInp == 'c'){
+			y = 2;
+		}
+		if (rowInp == 'D' || rowInp == 'd'){
+			y = 3;
+		}
+		if (rowInp == 'E' || rowInp == 'e'){
+			y = 4;
+		}
+		
+		int x = Integer.parseInt(colInp);
+		x = x-1;
+		System.out.println("Row: " + y);
+		System.out.println("Column: " + x);
+		
+		int move = y*10 + x;
+				
+		System.out.println("Total: " + move);
+		
+		return move;
+	}
+
 	//Handles attacking
 	public void attackMove(int from, int to, char color) {
 		int deathC = 0;
@@ -500,14 +539,34 @@ public class BonzeeRules {
 	//Prints board
 	public void printBoard() {
 		System.out.println("-------------------------------");
-		System.out.println("  0 1 2 3 4 5 6 7 8");
+		System.out.println("  1 2 3 4 5 6 7 8 9");
 		for (int i = 0; i < row; i++) {
-			System.out.print((i) + " ");
+			if (i == 0)
+				System.out.print("A" + " ");
+			if (i == 1)
+				System.out.print("B" + " ");
+			if (i == 2)
+				System.out.print("C" + " ");
+			if (i == 3)
+				System.out.print("D" + " ");
+			if (i == 4)
+				System.out.print("E" + " ");
 			for (int j = 0; j < col; j++) {
 				System.out.print(board[i][j] + " ");
 			}
+			if (i == 0)
+				System.out.print("A" + " ");
+			if (i == 1)
+				System.out.print("B" + " ");
+			if (i == 2)
+				System.out.print("C" + " ");
+			if (i == 3)
+				System.out.print("D" + " ");
+			if (i == 4)
+				System.out.print("E" + " ");
 			System.out.println();
 		}
+		System.out.println("  1 2 3 4 5 6 7 8 9");
 		System.out.println("");
 
 	}
