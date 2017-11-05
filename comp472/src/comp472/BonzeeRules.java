@@ -13,8 +13,8 @@ public class BonzeeRules {
 	int redPiece;
 	int greenPiece;
 	int max;
-	
-	//Initial settings
+
+	// Initial settings
 	public BonzeeRules() {
 
 		board = new char[row][col];
@@ -31,13 +31,13 @@ public class BonzeeRules {
 		for (int j = 0; j < col; j++) {
 			// Main Board
 			/*
-			  board[0][j] = 'R'; board[1][j] = 'R'; board[2][5] = 'R';
-			 board[2][6] = 'R'; board[2][7] = 'R'; board[2][8] = 'R';
-			  
-			 board[3][j] = 'G'; board[4][j] = 'G'; board[2][0] = 'G';
-			 board[2][1] = 'G'; board[2][2] = 'G'; board[2][3] = 'G';
-			 
-*/
+			 * board[0][j] = 'R'; board[1][j] = 'R'; board[2][5] = 'R';
+			 * board[2][6] = 'R'; board[2][7] = 'R'; board[2][8] = 'R';
+			 * 
+			 * board[3][j] = 'G'; board[4][j] = 'G'; board[2][0] = 'G';
+			 * board[2][1] = 'G'; board[2][2] = 'G'; board[2][3] = 'G';
+			 * 
+			 */
 			// Testing
 			board[0][0] = 'G';
 			board[0][2] = 'G';
@@ -45,21 +45,21 @@ public class BonzeeRules {
 			board[2][0] = 'R';
 			board[2][2] = 'R';
 			board[1][5] = 'G';
-			//board[2][4] = 'R';
-			//board[2][5] = 'R';
-		   // board[0][5] = 'G';
-			//board[2][2] = 'G';
-			//board[2][3] = 'G';
-			//board[3][5] = 'G';
-			//board[2][7] = 'G';
-			//board[4][3] = 'G';
-			//board[4][5] = 'G';
-			//board[4][7] = 'G';
+			// board[2][4] = 'R';
+			// board[2][5] = 'R';
+			// board[0][5] = 'G';
+			// board[2][2] = 'G';
+			// board[2][3] = 'G';
+			// board[3][5] = 'G';
+			// board[2][7] = 'G';
+			// board[4][3] = 'G';
+			// board[4][5] = 'G';
+			// board[4][7] = 'G';
 
 		}
 	}
-	
-	//Gets input from player to make the move
+
+	// Gets input from player to make the move
 	public void enterMove(int from, int to) {
 		// Take first digit and then last digit
 		int yOri = from / 10;
@@ -72,11 +72,11 @@ public class BonzeeRules {
 		board[yTo][xTo] = turn;
 
 	}
-	
-		
-		//NEED TO LOOP THIS FOR ALL POSITIONS
-		//This method checks all possible moves from a position and determines if IT can move and 
-		// if it can attack it will take the max pieces it can eat and move that way
+
+	// NEED TO LOOP THIS FOR ALL POSITIONS
+	// This method checks all possible moves from a position and determines if
+	// IT can move and
+	// if it can attack it will take the max pieces it can eat and move that way
 	public void move(int from, int to, char turn) {
 
 		// Not sure if I need these for this method
@@ -85,22 +85,17 @@ public class BonzeeRules {
 		int yTo = to / 10;
 		int xTo = to % 10;
 
-		
-		
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < col; j++) {
-			int x =0; 
-			int y =0;
-			if(board[y][x] == turn){
-				
-			}
-			
+				int x = 0;
+				int y = 0;
+				if (board[y][x] == turn) {
+
+				}
+
 			}
 		}
-		
-		
-		
-		
+
 		System.out.println("Moving from " + from + " to " + to);
 		System.out.println("Validating possible moves..");
 		System.out.println();
@@ -116,8 +111,7 @@ public class BonzeeRules {
 		int right = from + 1;
 
 		int tempMax = 0;
-		
-		
+
 		if (validateMove(from, up, turn) == false) {
 			System.out.println("No");
 
@@ -127,10 +121,10 @@ public class BonzeeRules {
 			System.out.println();
 
 		}
-		
-		if(tempMax < max){
+
+		if (tempMax < max) {
 			tempMax = max;
-			
+
 		}
 
 		if (validateMove(from, down, turn) == false) {
@@ -140,16 +134,15 @@ public class BonzeeRules {
 			System.out.println("Can move down");
 			checkerM(from, down, turn);
 			System.out.println();
-			
 
 		}
-		
-		if(tempMax < max){
+
+		if (tempMax < max) {
 			tempMax = max;
-			
+
 		}
-		
-		//the max is 1 here then it gets reset to 0
+
+		// the max is 1 here then it gets reset to 0
 
 		if (validateMove(from, left, turn) == false) {
 			System.out.println("No");
@@ -160,10 +153,10 @@ public class BonzeeRules {
 			System.out.println();
 
 		}
-		
-		if(tempMax < max){
+
+		if (tempMax < max) {
 			tempMax = max;
-			
+
 		}
 
 		if (validateMove(from, right, turn) == false) {
@@ -173,65 +166,87 @@ public class BonzeeRules {
 			System.out.println("Can move right");
 			checkerM(from, right, turn);
 			System.out.println();
-			
 
 		}
-		
-		if(tempMax < max){
+
+		if (tempMax < max) {
 			tempMax = max;
-			
+
 		}
 		// IF you are here then ALL 4 moves cant happen then move to another
 		// position on the board
-		
-		System.out.println("Its turn: "+turn);
-		System.out.println(tempMax);		
+
+		System.out.println("Its turn: " + turn);
+		System.out.println(tempMax);
 		System.out.println("----------------------------");
 
 	}
-	
-		// Not to execute move, just count the pieces it can eat
-		public int checkerM(int from, int to, char color) {
-			int deathC = 0;
-			char enemy = 'a';
-			if (color == 'G') {
-				enemy = 'R';
+
+	// Not to execute move, just count the pieces it can eat
+	public int checkerM(int from, int to, char color) {
+		int deathC = 0;
+		char enemy = 'a';
+		if (color == 'G') {
+			enemy = 'R';
+		} else {
+			enemy = 'G';
+		}
+		boolean stop = false;
+		boolean forward = false;
+		// boolean def = true;
+		int directionY = 0; // -1: up/1: down
+		int directionX = 0; // -1: left/1: right;
+		int yOri = from / 10;
+		int xOri = from % 10;
+		int xAttack = 0;
+		int yAttack = 0;
+
+		int yTo = to / 10;
+		int xTo = to % 10;
+
+		if (yTo > yOri) {
+			directionY = 1;
+		} else if (yTo < yOri) {
+			directionY = -1;
+		}
+		if (xTo > xOri) {
+			directionX = 1;
+		} else if (xTo < xOri) {
+			directionX = -1;
+		}
+		yAttack = yTo + directionY;
+		xAttack = xTo + directionX;
+		// forward attack
+		while (!stop) {
+			if (!(yAttack < 0 || yAttack > 4 || xAttack < 0 || xAttack > 8)) {
+				if (board[yAttack][xAttack] == enemy) {
+					deathC++;
+					forward = true;
+					// def = false;
+					// board[yAttack][xAttack] = '_';
+				} else {
+					stop = true;
+				}
+				yAttack += directionY;
+				xAttack += directionX;
 			} else {
-				enemy = 'G';
+				stop = true;
 			}
-			boolean stop = false;
-			boolean forward = false;
-			//boolean def = true;
-			int directionY = 0; // -1: up/1: down
-			int directionX = 0; // -1: left/1: right;
-			int yOri = from / 10;
-			int xOri = from % 10;
-			int xAttack = 0;
-			int yAttack = 0;
+		}
+		// backwards attack
+		stop = false;
+		directionX = -directionX;
+		directionY = -directionY;
+		yAttack = yOri + directionY;
+		xAttack = xOri + directionX;
 
-			int yTo = to / 10;
-			int xTo = to % 10;
-
-			if (yTo > yOri) {
-				directionY = 1;
-			} else if (yTo < yOri) {
-				directionY = -1;
-			}
-			if (xTo > xOri) {
-				directionX = 1;
-			} else if (xTo < xOri) {
-				directionX = -1;
-			}
-			yAttack = yTo + directionY;
-			xAttack = xTo + directionX;
-			// forward attack
+		if (forward == false) {
 			while (!stop) {
 				if (!(yAttack < 0 || yAttack > 4 || xAttack < 0 || xAttack > 8)) {
 					if (board[yAttack][xAttack] == enemy) {
 						deathC++;
-						forward = true;
-						//def = false;
-						//board[yAttack][xAttack] = '_';
+						// def = false;
+						// board[yAttack][xAttack] = '_';
 					} else {
 						stop = true;
 					}
@@ -241,61 +256,28 @@ public class BonzeeRules {
 					stop = true;
 				}
 			}
-			// backwards attack
-			stop = false;
-			directionX = -directionX;
-			directionY = -directionY;
-			yAttack = yOri + directionY;
-			xAttack = xOri + directionX;
-
-			if (forward == false) {
-				while (!stop) {
-					if (!(yAttack < 0 || yAttack > 4 || xAttack < 0 || xAttack > 8)) {
-						if (board[yAttack][xAttack] == enemy) {
-							deathC++;
-							//def = false;
-							//board[yAttack][xAttack] = '_';
-						} else {
-							stop = true;
-						}
-						yAttack += directionY;
-						xAttack += directionX;
-					} else {
-						stop = true;
-					}
-				}
-			}
-			if (enemy == 'G') {
-				
-				System.out.println("Pieces that can be consumed: " +deathC);
-				 max = deathC;
-				 System.out.println("Max is : " +max);
-			} else {
-				
-				System.out.println("Max from attack method: "+max);
-				max = deathC;
-			}
-			
-			return max;
-/*
-			if (def) {
-				defense++;
-				System.out.println("Defensive move");
-			} else {
-				defense = 0;
-			}
-			System.out.println("Finished attack/defense phase");
-
-			if (defense >= 10) {
-				gameOver(2);
-			}*/
 		}
-		
-	
-	
-	
-	
-	//Intiates the move entered
+		if (enemy == 'G') {
+
+			System.out.println("Pieces that can be consumed: " + deathC);
+			max = deathC;
+			System.out.println("Max is : " + max);
+		} else {
+
+			System.out.println("Max from attack method: " + max);
+			max = deathC;
+		}
+
+		return max;
+		/*
+		 * if (def) { defense++; System.out.println("Defensive move"); } else {
+		 * defense = 0; } System.out.println("Finished attack/defense phase");
+		 * 
+		 * if (defense >= 10) { gameOver(2); }
+		 */
+	}
+
+	// Intiates the move entered
 	public void makeMove() {
 		int over = 0;
 
@@ -310,147 +292,129 @@ public class BonzeeRules {
 		while (!moved) {
 
 			String regex = "([A-E]|[a-e])[1-9]";
-			
-			/*
-			System.out.println("(FROM)Enter Piece that you are at now(ie y = 2, x =5. so enter 25)");
-			String inputFrom = k.nextLine();
-			while (!(inputFrom.matches(regex))) {
-				System.out.println("(FROM)Enter Piece that you are at now(ie y = 2, x =5. so enter 25)");
-				inputFrom = k.nextLine();
-				over++;
-				if (over >= 1)
-					gameOver(1);
-			}
 
-			int moveFrom = inputConverter(inputFrom);
-			
-			System.out.println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)");
-			String inputTo = k.nextLine();
-			while (!(inputTo.matches(regex))) {
-				System.out.println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)");
-				inputTo = k.nextLine();
-				over++;
-				if (over >= 1)
-					gameOver(1);
-			}
-			int moveTo = inputConverter(inputTo);
-			*/
-			//AI MOVE
-			int start =00;
+			/*
+			 * System.out.
+			 * println("(FROM)Enter Piece that you are at now(ie y = 2, x =5. so enter 25)"
+			 * ); String inputFrom = k.nextLine(); while
+			 * (!(inputFrom.matches(regex))) { System.out.
+			 * println("(FROM)Enter Piece that you are at now(ie y = 2, x =5. so enter 25)"
+			 * ); inputFrom = k.nextLine(); over++; if (over >= 1) gameOver(1);
+			 * }
+			 * 
+			 * int moveFrom = inputConverter(inputFrom);
+			 * 
+			 * System.out.
+			 * println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)"
+			 * ); String inputTo = k.nextLine(); while
+			 * (!(inputTo.matches(regex))) { System.out.
+			 * println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)"
+			 * ); inputTo = k.nextLine(); over++; if (over >= 1) gameOver(1); }
+			 * int moveTo = inputConverter(inputTo);
+			 */
+			// AI MOVE
+			int start = 00;
 			int end = 01;
-			if(turn == 'G'){
+			if (turn == 'G') {
 				System.out.println("Hello");
-			
-		
-				
-			for (int i = 0; i < row; i++) {
-				for (int j = 0; j < col; j++) {
-				
-				if(board[i][j] == turn){
-					System.out.println("G");
-				
-					System.out.println("Current max is: " +max);
-					move(start,end,turn);
-					
-					
-				}
-				
-					if(end ==48){
-				
-				System.out.println("Done");
-				moved= true;
-					}
-				if(start == 8 && end == 9 ){
-					
-					start = 00;
-					end=01;
-					end = end+10;
-				}
-				else if(start ==18 && end == 19 ){
-					start = 00;
-					end=01;
-					end = end+20;
-				}
-				else if(start ==28 && end == 29){
-					start = 00;
-					end=01;
-					end = end+30;
-				}
-				else if(start ==38 && end == 39 ){
-					start = 00;
-					end=01;
-					end = end+40;
-				}
-				else{
-				start = end;
-				//end = end +1;
-				end = start +1;
-				}
-				}
-			}
-			}
-			
-			//AI END
-	
-//commenting this out just for testing ATM 
-			/*
-			if (validateMove(moveFrom, moveTo, turn)) {
-				attackMove(moveFrom, moveTo, turn);
-				enterMove(moveFrom, moveTo);
 
-				moved = true;
-				break;
-			} else {
-				over++;
+				for (int i = 0; i < row; i++) {
+					for (int j = 0; j < col; j++) {
+
+						if (board[i][j] == turn) {
+							System.out.println("G");
+
+							System.out.println("Current max is: " + max);
+							move(start, end, turn);
+
+						}
+
+						if (end == 48) {
+
+							System.out.println("Done");
+							moved = true;
+						}
+						if (start == 8 && end == 9) {
+
+							start = 00;
+							end = 01;
+							end = end + 10;
+						} else if (start == 18 && end == 19) {
+							start = 00;
+							end = 01;
+							end = end + 20;
+						} else if (start == 28 && end == 29) {
+							start = 00;
+							end = 01;
+							end = end + 30;
+						} else if (start == 38 && end == 39) {
+							start = 00;
+							end = 01;
+							end = end + 40;
+						} else {
+							start = end;
+							end = start + 1;
+						}
+					}
+				}
 			}
-			if (over >= 2)
-				gameOver(1);*/
+
+			// AI END
+
+			// commenting this out just for testing ATM
+			/*
+			 * if (validateMove(moveFrom, moveTo, turn)) { attackMove(moveFrom,
+			 * moveTo, turn); enterMove(moveFrom, moveTo);
+			 * 
+			 * moved = true; break; } else { over++; } if (over >= 2)
+			 * gameOver(1);
+			 */
 
 		}
-		System.out.println("Final max is: " +max);
+		System.out.println("Final max is: " + max);
 		if (turn == 'R')
 			turn = 'G';
 		else
 			turn = 'R';
 
 	}
-	
+
 	private int inputConverter(String input) {
 		System.out.println("Raw input: " + input);
-		
+
 		char rowInp = input.charAt(0);
 		int y = 0;
-		String colInp = ""+input.charAt(1);
-		
-		if (rowInp == 'A' || rowInp == 'a'){
+		String colInp = "" + input.charAt(1);
+
+		if (rowInp == 'A' || rowInp == 'a') {
 			y = 0;
 		}
-		if (rowInp == 'B' || rowInp == 'b'){
+		if (rowInp == 'B' || rowInp == 'b') {
 			y = 1;
 		}
-		if (rowInp == 'C' || rowInp == 'c'){
+		if (rowInp == 'C' || rowInp == 'c') {
 			y = 2;
 		}
-		if (rowInp == 'D' || rowInp == 'd'){
+		if (rowInp == 'D' || rowInp == 'd') {
 			y = 3;
 		}
-		if (rowInp == 'E' || rowInp == 'e'){
+		if (rowInp == 'E' || rowInp == 'e') {
 			y = 4;
 		}
-		
+
 		int x = Integer.parseInt(colInp);
-		x = x-1;
+		x = x - 1;
 		System.out.println("Row: " + y);
 		System.out.println("Column: " + x);
-		
-		int move = y*10 + x;
-				
+
+		int move = y * 10 + x;
+
 		System.out.println("Total: " + move);
-		
+
 		return move;
 	}
 
-	//Handles attacking
+	// Handles attacking
 	public void attackMove(int from, int to, char color) {
 		int deathC = 0;
 		char enemy = 'a';
@@ -544,7 +508,7 @@ public class BonzeeRules {
 		}
 	}
 
-	//Validates moves entered
+	// Validates moves entered
 	public boolean validateMove(int from, int to, char color) {
 		int yOri = from / 10;
 		int xOri = from % 10;
@@ -591,8 +555,8 @@ public class BonzeeRules {
 
 		}
 	}
-	
-	//Game over situations
+
+	// Game over situations
 	public boolean gameOver(int forced) {
 
 		if (forced == 1) {
@@ -622,10 +586,8 @@ public class BonzeeRules {
 
 		return false;
 	}
-	
 
-	
-	//Prints board
+	// Prints board
 	public void printBoard() {
 		System.out.println("-------------------------------");
 		System.out.println("  1 2 3 4 5 6 7 8 9");
