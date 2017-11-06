@@ -12,6 +12,11 @@ public class BonzeeRules {
 	List<Integer> fMove = new ArrayList<Integer>();
 	List<Integer> tMove = new ArrayList<Integer>();
 	
+	List<Integer> gHori = new ArrayList<Integer>();
+	List<Integer> gVerti = new ArrayList<Integer>();
+	List<Integer> rHori = new ArrayList<Integer>();
+	List<Integer> rVerti = new ArrayList<Integer>();
+	
 	private char turn;
 	char player1, player2;
 	int redPiece;
@@ -89,6 +94,56 @@ public class BonzeeRules {
 	// This method checks all possible moves from a position and determines if
 	// IT can move and
 	// if it can attack it will take the max pieces it can eat and move that way
+	public void hFunc(){	
+		
+		int h=0;
+		for (int i = 0; i < row; i++) {
+			for (int j = 0; j < col; j++) {
+				if(board[i][j]=='R'){
+					//System.out.println("R at: " +i+ " " +j);
+					rHori.add((i+1));
+					rVerti.add((j+1));
+					
+				}else if(board[i][j] == 'G'){
+					//System.out.println("G at: " +i+ " " +j);
+					gHori.add((i+1));
+					gVerti.add((j+1));
+				}
+			}
+		}
+		
+		int sumRH=0;
+		int sumRV = 0;
+		for(int i=0; i<rHori.size();i++){
+			sumRH += rHori.get(i);
+			
+		}
+		for(int i=0; i<rVerti.size();i++){
+			sumRV += rVerti.get(i);
+			
+		}
+		
+		int sumGH=0;
+		int sumGV = 0;
+		for(int i=0; i<gHori.size();i++){
+			sumGH += gHori.get(i);
+			
+		}
+		for(int i=0; i<gVerti.size();i++){
+			sumGV += gVerti.get(i);
+			
+		}
+		
+		h = 100*sumGH + 50*sumGV -100*sumRH -50*sumRV;
+		System.out.println("Total e(N) is: "+h);
+		
+		gVerti.clear();
+		gHori.clear();
+		rVerti.clear();
+		rHori.clear();
+		
+
+	}
 	public void move(int from, int to, char turn) {
 
 		boolean valid = false;
@@ -429,7 +484,7 @@ public class BonzeeRules {
 			
 			
 			//System.out.println("Index is: " + index);
-			System.out.println("From position is " + aiFrom + " and To position is " + aiTo+" with an e(N) of: "+obj);
+			System.out.println("From position is " + aiFrom + " and To position is " + aiTo);
 			
 			attackMove(aiFrom,aiTo,turn);
 			enterMove(aiFrom, aiTo);
@@ -502,7 +557,7 @@ public class BonzeeRules {
 			int aiTo = tMove.get(index);
 
 			//System.out.println("Index is: " + index);
-			System.out.println("From position is " + aiFrom + " and To position is " + aiTo+" with an e(N) of: "+obj);
+			System.out.println("From position is " + aiFrom + " and To position is " + aiTo);
 			
 			attackMove(aiFrom,aiTo,turn);
 			enterMove(aiFrom, aiTo);

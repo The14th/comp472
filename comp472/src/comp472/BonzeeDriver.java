@@ -9,8 +9,8 @@ public class BonzeeDriver {
 		n.printBoard();
 
 		while (!n.gameOver(0)) {
+			n.hFunc();
 			n.makeMove();
-			
 			n.printBoard();
 			
 		}
