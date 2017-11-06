@@ -17,6 +17,7 @@ public class BonzeeRules {
 	char player1, player2;
 	int redPiece;
 	int greenPiece;
+	boolean next = false;
 	int max;
 	
 
@@ -310,114 +311,117 @@ public class BonzeeRules {
 
 		Scanner k = new Scanner(System.in);
 		
+		/*
 		if (turn == 'R')
 			System.out.println("Red's turn:\n");
 		else
 			System.out.println("Green's turn:\n");
+*/
+		
 
-		boolean moved = false;
-
-		while (!moved) {
-			
-			
-			
-			String regex = "([A-E]|[a-e])[1-9]";
-
-			
+		//Green's turn
+		System.out.println("Green's turn:\n");
+		turn = 'G';
+		if (player1 == 'G'){
+			boolean moved = false;
+			while (!moved) {
+							
+				//System.out.println("human");
 				
-			System.out.println("(FROM)Enter Piece that you are at now(ie y = 2, x =5. so enter 25)");
-			String inputFrom = k.nextLine();
-			while (!(inputFrom.matches(regex))) {
+				String regex = "([A-E]|[a-e])[1-9]";
+	
 				System.out.println("(FROM)Enter Piece that you are at now(ie y = 2, x =5. so enter 25)");
-				inputFrom = k.nextLine();
-				over++;
-				if (over >= 1)
-					gameOver(1);
-			}
-
-			int moveFrom = inputConverter(inputFrom);
-
-			System.out.println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)");
-			String inputTo = k.nextLine();
-			while (!(inputTo.matches(regex))) {
+				String inputFrom = k.nextLine();
+				while (!(inputFrom.matches(regex))) {
+					System.out.println("(FROM)Enter Piece that you are at now(ie y = 2, x =5. so enter 25)");
+					inputFrom = k.nextLine();
+					over++;
+					if (over >= 1)
+						gameOver(1);
+				}
+	
+				int moveFrom = inputConverter(inputFrom);
+	
 				System.out.println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)");
-				inputTo = k.nextLine();
-				over++;
-				if (over >= 1)
-					gameOver(1);
-			}
-			int moveTo = inputConverter(inputTo);
-			 
-			 if (validateMove(moveFrom, moveTo, turn)) { 
-			  attackMove(moveFrom, moveTo, turn); 
-			  enterMove(moveFrom, moveTo);
-			  
-			  moved = true; 
-			  break; 
-			  } 
-			  else { 
-			  over++; 
-			 } 
-			 if (over >= 2)
-			  gameOver(1);
+				String inputTo = k.nextLine();
+				while (!(inputTo.matches(regex))) {
+					System.out.println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)");
+					inputTo = k.nextLine();
+					over++;
+					if (over >= 1)
+						gameOver(1);
+				}
+				int moveTo = inputConverter(inputTo);
+				 
+				 if (validateMove(moveFrom, moveTo, turn)) { 
+					  attackMove(moveFrom, moveTo, turn); 
+					  enterMove(moveFrom, moveTo);
+					  next = true;
+					  moved = true; 
+					  break; 
+				  } 
+				  else { 
+				  over++; 
+				 } 
+				 if (over >= 2)
+				  gameOver(1);
+				 
+			}//end while (!moved) human turn
 			
-			//NEED TO WRITE A CONDITION IF NOT HUMAN SKIP
-			// AI MOVE
-			int start = 00;
-			int end = 01;
-			//if (turn == 'R') {
-				//System.out.println("Hello");
-
-				for (int i = 0; i < row; i++) {
-					for (int j = 0; j < col; j++) {
-
-						if (board[i][j] == turn) {
-							//System.out.println("G");
-
-							System.out.println("Current max is: " + max);
-							move(start, end, turn);
-
-						}
-
-						if (end == 48) {
-
-							System.out.println("Done");
-							moved = true;
-						}
-						if (start == 8 && end == 9) {
-
-							start = 00;
-							end = 01;
-							end = end + 10;
-						} else if (start == 18 && end == 19) {
-							start = 00;
-							end = 01;
-							end = end + 20;
-						} else if (start == 28 && end == 29) {
-							start = 00;
-							end = 01;
-							end = end + 30;
-						} else if (start == 38 && end == 39) {
-							start = 00;
-							end = 01;
-							end = end + 40;
-						} else {
-							start = end;
-							end = start + 1;
+			//switch turn
+			printBoard();
+			System.out.println("Red's turn:\n");
+			turn = 'R';
+			moved = false;
+			while (!moved) {
+				//NEED TO WRITE A CONDITION IF NOT HUMAN SKIP
+				// AI MOVE
+				int start = 00;
+				int end = 01;
+				//if (turn == 'R') {
+					//System.out.println("Hello");
+	
+					for (int i = 0; i < row; i++) {
+						for (int j = 0; j < col; j++) {
+	
+							if (board[i][j] == turn) {
+								//System.out.println("G");
+	
+								System.out.println("Current max is: " + max);
+								move(start, end, turn);
+	
+							}
+	
+							if (end == 48) {
+	
+								System.out.println("Done");
+								moved = true;
+							}
+							if (start == 8 && end == 9) {
+	
+								start = 00;
+								end = 01;
+								end = end + 10;
+							} else if (start == 18 && end == 19) {
+								start = 00;
+								end = 01;
+								end = end + 20;
+							} else if (start == 28 && end == 29) {
+								start = 00;
+								end = 01;
+								end = end + 30;
+							} else if (start == 38 && end == 39) {
+								start = 00;
+								end = 01;
+								end = end + 40;
+							} else {
+								start = end;
+								end = start + 1;
+							}
 						}
 					}
-				}
-			//}
-		
-			// AI END	
+			}//end ai while(!moved)
 			
-			
-			 
-			 
-
-		}
-		/*
-		 * same condition for AI
 			System.out.println("Final max is: " + max);
 			System.out.println("Max moves: " + maxMove);
 			System.out.println("From moves: " + fMove);
@@ -435,18 +439,139 @@ public class BonzeeRules {
 			
 			attackMove(aiFrom,aiTo,turn);
 			enterMove(aiFrom, aiTo);
-		
-		*/
-		
+			
+		}//end human start case
+		else{
+			boolean moved = false;
+			while (!moved) {
+				//NEED TO WRITE A CONDITION IF NOT HUMAN SKIP
+				// AI MOVE
+				int start = 00;
+				int end = 01;
+				//if (turn == 'R') {
+					//System.out.println("Hello");
+	
+					for (int i = 0; i < row; i++) {
+						for (int j = 0; j < col; j++) {
+	
+							if (board[i][j] == turn) {
+								//System.out.println("G");
+	
+								System.out.println("Current max is: " + max);
+								move(start, end, turn);
+	
+							}
+	
+							if (end == 48) {
+	
+								System.out.println("Done");
+								moved = true;
+							}
+							if (start == 8 && end == 9) {
+	
+								start = 00;
+								end = 01;
+								end = end + 10;
+							} else if (start == 18 && end == 19) {
+								start = 00;
+								end = 01;
+								end = end + 20;
+							} else if (start == 28 && end == 29) {
+								start = 00;
+								end = 01;
+								end = end + 30;
+							} else if (start == 38 && end == 39) {
+								start = 00;
+								end = 01;
+								end = end + 40;
+							} else {
+								start = end;
+								end = start + 1;
+							}
+						}
+					}
+			}//end ai while(!moved)
+			
+			System.out.println("Final max is: " + max);
+			System.out.println("Max moves: " + maxMove);
+			System.out.println("From moves: " + fMove);
+			System.out.println("To moves: " + tMove);
+
+			Object obj = Collections.max(maxMove);
+			System.out.println(obj);
+
+			int index = maxMove.indexOf(obj);
+			int aiFrom = fMove.get(index);
+			int aiTo = tMove.get(index);
+
+			System.out.println("Index is: " + index);
+			System.out.println("From position is " + aiFrom + " and To position is " + aiTo);
+			
+			attackMove(aiFrom,aiTo,turn);
+			enterMove(aiFrom, aiTo);
+			
+			//switch turn
+			printBoard();
+			System.out.println("Red's turn:\n");
+			turn = 'R';
+			moved = false;
+			while (!moved) {
+							
+				//System.out.println("human");
+				
+				String regex = "([A-E]|[a-e])[1-9]";
+	
+				System.out.println("(FROM)Enter Piece that you are at now(ie y = 2, x =5. so enter 25)");
+				String inputFrom = k.nextLine();
+				while (!(inputFrom.matches(regex))) {
+					System.out.println("(FROM)Enter Piece that you are at now(ie y = 2, x =5. so enter 25)");
+					inputFrom = k.nextLine();
+					over++;
+					if (over >= 1)
+						gameOver(1);
+				}
+	
+				int moveFrom = inputConverter(inputFrom);
+	
+				System.out.println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)");
+				String inputTo = k.nextLine();
+				while (!(inputTo.matches(regex))) {
+					System.out.println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)");
+					inputTo = k.nextLine();
+					over++;
+					if (over >= 1)
+						gameOver(1);
+				}
+				int moveTo = inputConverter(inputTo);
+				 
+				 if (validateMove(moveFrom, moveTo, turn)) { 
+					  attackMove(moveFrom, moveTo, turn); 
+					  enterMove(moveFrom, moveTo);
+					  next = true;
+					  moved = true; 
+					  break; 
+				  } 
+				  else { 
+				  over++; 
+				 } 
+				 if (over >= 2)
+				  gameOver(1);
+				 
+			}//end while (!moved) human turn
+			
+		}
+		/*
 		if (turn == 'R')
 			turn = 'G';
 		else
 			turn = 'R';
-
+*/
+		
+		turn = 'G';
 	}
 
 	private int inputConverter(String input) {
-		System.out.println("Raw input: " + input);
+		//System.out.println("Raw input: " + input);
 
 		char rowInp = input.charAt(0);
 		int y = 0;
@@ -470,12 +595,12 @@ public class BonzeeRules {
 
 		int x = Integer.parseInt(colInp);
 		x = x - 1;
-		System.out.println("Row: " + y);
-		System.out.println("Column: " + x);
+		//System.out.println("Row: " + y);
+		//System.out.println("Column: " + x);
 
 		int move = y * 10 + x;
 
-		System.out.println("Total: " + move);
+		//System.out.println("Total: " + move);
 
 		return move;
 	}
