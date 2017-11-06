@@ -1,6 +1,5 @@
 package comp472;
 
-import java.io.*;
 import java.util.*;
 
 public class BonzeeRules {
@@ -87,23 +86,16 @@ public class BonzeeRules {
 
 	}
 
-	// NEED TO LOOP THIS FOR ALL POSITIONS
 	// This method checks all possible moves from a position and determines if
 	// IT can move and
 	// if it can attack it will take the max pieces it can eat and move that way
 	public void move(int from, int to, char turn) {
 
 		boolean valid = false;
-		
-		// Not sure if I need these for this method
-		int yOri = from / 10;
-		int xOri = from % 10;
-		int yTo = to / 10;
-		int xTo = to % 10;
 
-		System.out.println("Moving from " + from + " to " + to);
-		System.out.println("Validating possible moves..");
-		System.out.println();
+		//System.out.println("Moving from " + from + " to " + to);
+		//System.out.println("! AI THINKING !");
+		//System.out.println();
 
 
 		// UP meaning down
@@ -120,12 +112,12 @@ public class BonzeeRules {
 		int tempFrom = 0;
 		int tempTo= 0;
 
-		if (validateMove(from, up, turn) == false) {
-			System.out.println("No");
+		if (validateAI(from, up, turn) == false) {
+			//System.out.println("No");
 
 		} else {
 			valid = true;
-			System.out.println("Can move up");
+			//System.out.println("Can move up");
 			tempMax = checkerM(from, up, turn);
 			System.out.println();
 			
@@ -141,12 +133,12 @@ public class BonzeeRules {
 
 		
 
-		if (validateMove(from, down, turn) == false) {
-			System.out.println("No");
+		if (validateAI(from, down, turn) == false) {
+			//System.out.println("No");
 
 		} else {
 			valid = true;
-			System.out.println("Can move down");
+			//System.out.println("Can move down");
 			tempMax = checkerM(from, down, turn);
 			System.out.println();
 			
@@ -160,12 +152,12 @@ public class BonzeeRules {
 		}
 
 
-		if (validateMove(from, left, turn) == false) {
-			System.out.println("No");
+		if (validateAI(from, left, turn) == false) {
+			//System.out.println("No");
 
 		} else {
 			valid = true;
-			System.out.println("Can move left");
+			//System.out.println("Can move left");
 			tempMax = checkerM(from, left, turn);
 			System.out.println();
 			
@@ -180,12 +172,12 @@ public class BonzeeRules {
 
 		
 
-		if (validateMove(from, right, turn) == false) {
-			System.out.println("No");
+		if (validateAI(from, right, turn) == false) {
+			//System.out.println("No");
 
 		} else {
 			valid = true;
-			System.out.println("Can move right");
+			//System.out.println("Can move right");
 			tempMax = checkerM(from, right, turn);
 			System.out.println();
 			
@@ -201,10 +193,10 @@ public class BonzeeRules {
 
 		
 
-		System.out.println("Its turn: " + turn);
-		System.out.println(tempMax);
-		System.out.println(tempFrom);
-		System.out.println(tempTo);
+		//System.out.println("Its turn: " + turn);
+		//System.out.println(tempMax);
+		//System.out.println(tempFrom);
+		//System.out.println(tempTo);
 		if (valid){
 			maxMove.add(tempMax);
 		}
@@ -213,7 +205,7 @@ public class BonzeeRules {
 		}
 		fMove.add(tempFrom);
 		tMove.add(tempTo);
-		System.out.println("----------------------------");
+		//System.out.println("----------------------------");
 		
 	}
 
@@ -294,22 +286,17 @@ public class BonzeeRules {
 		}
 		if (enemy == 'G') {
 
-			System.out.println("Pieces that can be consumed: " + deathC);
+			//System.out.println("Pieces that can be consumed: " + deathC);
 			max = deathC;
-			System.out.println("Max is : " + max);
+			//System.out.println("Max is : " + max);
 		} else {
 			max = deathC;
-			System.out.println("Max from attack method: " + max);
+			//System.out.println("Max from attack method: " + max);
 			
 		}
 
 		return max;
-		/*
-		 * if (def) { defense++; System.out.println("Defensive move"); } else {
-		 * defense = 0; } System.out.println("Finished attack/defense phase");
-		 * 
-		 * if (defense >= 10) { gameOver(2); }
-		 */
+
 	}
 
 	// Intiates the move entered
@@ -317,15 +304,9 @@ public class BonzeeRules {
 		int over = 0;
 
 		Scanner k = new Scanner(System.in);
-		
-		/*
-		if (turn == 'R')
-			System.out.println("Red's turn:\n");
-		else
-			System.out.println("Green's turn:\n");
-*/
-		
+			
 		clearList();
+		
 		//Green's turn
 		printNumP();
 		System.out.println("Green's turn:\n");
@@ -334,7 +315,6 @@ public class BonzeeRules {
 			boolean moved = false;
 			while (!moved) {
 							
-				//System.out.println("human");
 				
 				String regex = "([A-E]|[a-e])[1-9]";
 	
@@ -374,7 +354,7 @@ public class BonzeeRules {
 				 if (over >= 2)
 				  gameOver(1);
 				 
-			}//end while (!moved) human turn
+			}
 			
 			gameOver(0);
 			
@@ -385,27 +365,26 @@ public class BonzeeRules {
 			turn = 'R';
 			moved = false;
 			while (!moved) {
-				//NEED TO WRITE A CONDITION IF NOT HUMAN SKIP
+				
 				// AI MOVE
 				int start = 00;
 				int end = 01;
-				//if (turn == 'R') {
-					//System.out.println("Hello");
+
 	
 					for (int i = 0; i < row; i++) {
 						for (int j = 0; j < col; j++) {
 	
 							if (board[i][j] == turn) {
-								//System.out.println("G");
+							
 	
-								System.out.println("Current max is: " + max);
+								//System.out.println("Current max is: " + max);
 								move(start, end, turn);
 	
 							}
 	
 							if (end == 48) {
 	
-								System.out.println("Done");
+								System.out.println("! AI THINKING DONE !");
 								moved = true;
 							}
 							if (start == 8 && end == 9) {
@@ -431,9 +410,9 @@ public class BonzeeRules {
 							}
 						}
 					}
-			}//end ai while(!moved)
+			}
 			
-			System.out.println("Final max is: " + max);
+			//System.out.println("Final max is: " + max);
 			System.out.println("Max moves: " + maxMove);
 			System.out.println("From moves: " + fMove);
 			System.out.println("To moves: " + tMove);
@@ -444,10 +423,10 @@ public class BonzeeRules {
 			int index = maxMove.indexOf(obj);
 			int aiFrom = fMove.get(index);
 			int aiTo = tMove.get(index);
+		
 			
 			
-
-			System.out.println("Index is: " + index);
+			//System.out.println("Index is: " + index);
 			System.out.println("From position is " + aiFrom + " and To position is " + aiTo);
 			
 			attackMove(aiFrom,aiTo,turn);
@@ -459,20 +438,19 @@ public class BonzeeRules {
 		else{
 			boolean moved = false;
 			while (!moved) {
-				//NEED TO WRITE A CONDITION IF NOT HUMAN SKIP
+			
 				// AI MOVE
 				int start = 00;
 				int end = 01;
-				//if (turn == 'R') {
-					//System.out.println("Hello");
+			
 	
 					for (int i = 0; i < row; i++) {
 						for (int j = 0; j < col; j++) {
 	
 							if (board[i][j] == turn) {
-								//System.out.println("G");
+							
 	
-								System.out.println("Current max is: " + max);
+								//System.out.println("Current max is: " + max);
 								move(start, end, turn);
 	
 							}
@@ -505,9 +483,9 @@ public class BonzeeRules {
 							}
 						}
 					}
-			}//end ai while(!moved)
+			}
 			
-			System.out.println("Final max is: " + max);
+		//	System.out.println("Final max is: " + max);
 			System.out.println("Max moves: " + maxMove);
 			System.out.println("From moves: " + fMove);
 			System.out.println("To moves: " + tMove);
@@ -519,7 +497,7 @@ public class BonzeeRules {
 			int aiFrom = fMove.get(index);
 			int aiTo = tMove.get(index);
 
-			System.out.println("Index is: " + index);
+			//System.out.println("Index is: " + index);
 			System.out.println("From position is " + aiFrom + " and To position is " + aiTo);
 			
 			attackMove(aiFrom,aiTo,turn);
@@ -535,7 +513,6 @@ public class BonzeeRules {
 			moved = false;
 			while (!moved) {
 							
-				//System.out.println("human");
 				
 				String regex = "([A-E]|[a-e])[1-9]";
 	
@@ -575,22 +552,14 @@ public class BonzeeRules {
 				 if (over >= 2)
 				  gameOver(1);
 				 
-			}//end while (!moved) human turn
+			}
 			
 			gameOver(0);
 		}
-		/*
-		if (turn == 'R')
-			turn = 'G';
-		else
-			turn = 'R';
-*/
-		
-		//turn = 'G';
 	}
 
 	private int inputConverter(String input) {
-		//System.out.println("Raw input: " + input);
+	
 
 		char rowInp = input.charAt(0);
 		int y = 0;
@@ -614,18 +583,17 @@ public class BonzeeRules {
 
 		int x = Integer.parseInt(colInp);
 		x = x - 1;
-		//System.out.println("Row: " + y);
-		//System.out.println("Column: " + x);
+
 
 		int move = y * 10 + x;
 
-		//System.out.println("Total: " + move);
 
 		return move;
 	}
 
 	// Handles attacking
 	public void attackMove(int from, int to, char color) {
+
 		int deathC = 0;
 		char enemy = 'a';
 		if (color == 'G') {
@@ -718,7 +686,6 @@ public class BonzeeRules {
 		}
 	}
 
-	// Validates moves entered
 	public boolean validateMove(int from, int to, char color) {
 		int yOri = from / 10;
 		int xOri = from % 10;
@@ -760,6 +727,54 @@ public class BonzeeRules {
 				return true;
 			} else {
 				System.out.println("White may only move horizontally or vertically by one space");
+				return false;
+			}
+
+		}
+	}
+	
+	// Validates moves entered
+	public boolean validateAI(int from, int to, char color) {
+		int yOri = from / 10;
+		int xOri = from % 10;
+
+		int yTo = to / 10;
+		int xTo = to % 10;
+
+		// out of bounds things
+		if (yOri < 0 || yOri > 4 || xOri < 0 || xOri > 8 || yTo < 0 || yTo > 4 || xTo < 0 || xTo > 8) {
+			//System.out.println("Over boundaries");
+			return false;
+		}
+
+		else if (board[yOri][xOri] != color) {
+			//System.out.println("Invalid piece selected");
+			return false;
+		}
+
+		else if (yOri == yTo && xOri == xTo) {
+			//System.out.println("You must move");
+			return false;
+		} else if (board[yTo][xTo] != '_') {
+			//System.out.println("Tile already filled");
+			return false;
+		}
+
+		if (((yOri + xOri) & 1) == 0) {
+			// even is black
+			if (yTo == yOri + 1 || yTo == yOri - 1 || xTo == xOri + 1 || xTo == xOri - 1) {
+				return true;
+			} else {
+				//System.out.println("Too far");
+				return false;
+			}
+		} else {
+			// odd is white
+			if (((yTo == yOri + 1 || yTo == yOri - 1) && xTo == xOri)
+					|| ((xTo == xOri + 1 || xTo == xOri - 1) && yTo == yOri)) {
+				return true;
+			} else {
+				//System.out.println("White may only move horizontally or vertically by one space");
 				return false;
 			}
 
@@ -868,5 +883,6 @@ public class BonzeeRules {
 		System.out.println("Green Pieces left: " +greenPiece);
 		System.out.println("Red Pieces left: "+redPiece);
 	}
+	
 
 }
