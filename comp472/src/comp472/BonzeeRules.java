@@ -9,10 +9,16 @@ public class BonzeeRules {
 	private int col = 9;
 	private int defense = 0;
 	private char[][] board;
+	List<Integer> maxMove = new ArrayList<Integer>();
+	List<Integer> fMove = new ArrayList<Integer>();
+	List<Integer> tMove = new ArrayList<Integer>();
+	
 	private char turn;
+	char player1, player2;
 	int redPiece;
 	int greenPiece;
 	int max;
+	
 
 	// Initial settings
 	public BonzeeRules() {
@@ -30,14 +36,14 @@ public class BonzeeRules {
 
 		for (int j = 0; j < col; j++) {
 			// Main Board
+			
+			  board[0][j] = 'R'; board[1][j] = 'R'; board[2][5] = 'R';
+			  board[2][6] = 'R'; board[2][7] = 'R'; board[2][8] = 'R';
+			  
+			  board[3][j] = 'G'; board[4][j] = 'G'; board[2][0] = 'G';
+			  board[2][1] = 'G'; board[2][2] = 'G'; board[2][3] = 'G';
+			  
 			/*
-			 * board[0][j] = 'R'; board[1][j] = 'R'; board[2][5] = 'R';
-			 * board[2][6] = 'R'; board[2][7] = 'R'; board[2][8] = 'R';
-			 * 
-			 * board[3][j] = 'G'; board[4][j] = 'G'; board[2][0] = 'G';
-			 * board[2][1] = 'G'; board[2][2] = 'G'; board[2][3] = 'G';
-			 * 
-			 */
 			// Testing
 			board[0][0] = 'G';
 		//	board[0][2] = 'G';
@@ -52,11 +58,16 @@ public class BonzeeRules {
 			// board[0][5] = 'G';
 			// board[2][2] = 'G';
 			// board[2][3] = 'G';
-			// board[3][5] = 'G';
+			 board[3][5] = 'R';
 			// board[2][7] = 'G';
 			// board[4][3] = 'G';
 			// board[4][5] = 'G';
 			// board[4][7] = 'G';
+			 board[0][8] = 'G';
+			 board[2][8] = 'R';
+			 board[3][8] = 'R';
+			 board[4][8] = 'R';
+			  */
 
 		}
 	}
@@ -101,7 +112,7 @@ public class BonzeeRules {
 		System.out.println("Moving from " + from + " to " + to);
 		System.out.println("Validating possible moves..");
 		System.out.println();
-		// boolean stop = false;
+
 
 		// UP meaning down
 		int up = from + 10;
@@ -111,8 +122,11 @@ public class BonzeeRules {
 		int left = from - 1;
 		// RIGHT
 		int right = from + 1;
-
+		
+		max = 0;
 		int tempMax = 0;
+		int tempFrom = 0;
+		int tempTo=0;
 
 		if (validateMove(from, up, turn) == false) {
 			System.out.println("No");
@@ -125,7 +139,10 @@ public class BonzeeRules {
 		}
 
 		if (tempMax < max) {
+			
 			tempMax = max;
+			tempFrom = from;
+			tempTo = up;
 
 		}
 
@@ -141,6 +158,8 @@ public class BonzeeRules {
 
 		if (tempMax < max) {
 			tempMax = max;
+			tempFrom = from;
+			tempTo = down;
 
 		}
 
@@ -156,6 +175,8 @@ public class BonzeeRules {
 
 		if (tempMax < max) {
 			tempMax = max;
+			tempFrom = from;
+			tempTo = left;
 
 		}
 
@@ -171,11 +192,19 @@ public class BonzeeRules {
 
 		if (tempMax < max) {
 			tempMax = max;
+			tempFrom = from;
+			tempTo=right;
 
 		}
+		
 
 		System.out.println("Its turn: " + turn);
 		System.out.println(tempMax);
+		System.out.println(tempFrom);
+		System.out.println(tempTo);
+		maxMove.add(tempMax);
+		fMove.add(tempFrom);
+		tMove.add(tempTo);
 		System.out.println("----------------------------");
 
 	}
@@ -280,6 +309,7 @@ public class BonzeeRules {
 		int over = 0;
 
 		Scanner k = new Scanner(System.in);
+		
 		if (turn == 'R')
 			System.out.println("Red's turn:\n");
 		else
@@ -288,39 +318,61 @@ public class BonzeeRules {
 		boolean moved = false;
 
 		while (!moved) {
-
+			
+			
+			
 			String regex = "([A-E]|[a-e])[1-9]";
 
-			/*
-			 * System.out.
-			 * println("(FROM)Enter Piece that you are at now(ie y = 2, x =5. so enter 25)"
-			 * ); String inputFrom = k.nextLine(); while
-			 * (!(inputFrom.matches(regex))) { System.out.
-			 * println("(FROM)Enter Piece that you are at now(ie y = 2, x =5. so enter 25)"
-			 * ); inputFrom = k.nextLine(); over++; if (over >= 1) gameOver(1);
-			 * }
-			 * 
-			 * int moveFrom = inputConverter(inputFrom);
-			 * 
-			 * System.out.
-			 * println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)"
-			 * ); String inputTo = k.nextLine(); while
-			 * (!(inputTo.matches(regex))) { System.out.
-			 * println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)"
-			 * ); inputTo = k.nextLine(); over++; if (over >= 1) gameOver(1); }
-			 * int moveTo = inputConverter(inputTo);
-			 */
+			
+				
+			System.out.println("(FROM)Enter Piece that you are at now(ie y = 2, x =5. so enter 25)");
+			String inputFrom = k.nextLine();
+			while (!(inputFrom.matches(regex))) {
+				System.out.println("(FROM)Enter Piece that you are at now(ie y = 2, x =5. so enter 25)");
+				inputFrom = k.nextLine();
+				over++;
+				if (over >= 1)
+					gameOver(1);
+			}
+
+			int moveFrom = inputConverter(inputFrom);
+
+			System.out.println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)");
+			String inputTo = k.nextLine();
+			while (!(inputTo.matches(regex))) {
+				System.out.println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)");
+				inputTo = k.nextLine();
+				over++;
+				if (over >= 1)
+					gameOver(1);
+			}
+			int moveTo = inputConverter(inputTo);
+			 
+			 if (validateMove(moveFrom, moveTo, turn)) { 
+			  attackMove(moveFrom, moveTo, turn); 
+			  enterMove(moveFrom, moveTo);
+			  
+			  moved = true; 
+			  break; 
+			  } 
+			  else { 
+			  over++; 
+			 } 
+			 if (over >= 2)
+			  gameOver(1);
+			
+			//NEED TO WRITE A CONDITION IF NOT HUMAN SKIP
 			// AI MOVE
 			int start = 00;
 			int end = 01;
-			if (turn == 'G') {
-				System.out.println("Hello");
+			//if (turn == 'R') {
+				//System.out.println("Hello");
 
 				for (int i = 0; i < row; i++) {
 					for (int j = 0; j < col; j++) {
 
 						if (board[i][j] == turn) {
-							System.out.println("G");
+							//System.out.println("G");
 
 							System.out.println("Current max is: " + max);
 							move(start, end, turn);
@@ -355,21 +407,37 @@ public class BonzeeRules {
 						}
 					}
 				}
-			}
-
-			// AI END
-
-			// commenting this out just for testing ATM
-			/*
-			 * if (validateMove(moveFrom, moveTo, turn)) { attackMove(moveFrom,
-			 * moveTo, turn); enterMove(moveFrom, moveTo);
-			 * 
-			 * moved = true; break; } else { over++; } if (over >= 2)
-			 * gameOver(1);
-			 */
+			//}
+		
+			// AI END	
+			
+			
+			 
+			 
 
 		}
-		System.out.println("Final max is: " + max);
+		/*
+		 * same condition for AI
+			System.out.println("Final max is: " + max);
+			System.out.println("Max moves: " + maxMove);
+			System.out.println("From moves: " + fMove);
+			System.out.println("To moves: " + tMove);
+
+			Object obj = Collections.max(maxMove);
+			System.out.println(obj);
+
+			int index = maxMove.indexOf(obj);
+			int aiFrom = fMove.get(index);
+			int aiTo = tMove.get(index);
+
+			System.out.println("Index is: " + index);
+			System.out.println("From position is " + aiFrom + " and To position is " + aiTo);
+			
+			attackMove(aiFrom,aiTo,turn);
+			enterMove(aiFrom, aiTo);
+		
+		*/
+		
 		if (turn == 'R')
 			turn = 'G';
 		else
@@ -618,6 +686,31 @@ public class BonzeeRules {
 		System.out.println("  1 2 3 4 5 6 7 8 9");
 		System.out.println("");
 
+	}
+	
+	public void whosWho(){
+		//Player1 will alwways be human
+		//player2 will be Ai
+		System.out.println("Human player is: ");
+		System.out.println("1 for R");
+		System.out.println("2 for G");
+		Scanner i = new Scanner(System.in);
+		int playerC = i.nextInt();
+		if(playerC == 1){
+			
+			//human is R and AI is G
+			player1='R';
+			player2='G';
+			System.out.println("You have chosen to be red and the AI will be green");
+			
+		}else{
+			
+		 // human is G and AI is R
+		player1= 'G';
+		player2= 'R';
+		System.out.println("You have chosen to be green and the AI will be red");
+		}
+			
 	}
 
 }
