@@ -119,7 +119,7 @@ public class BonzeeRules {
 			valid = true;
 			//System.out.println("Can move up");
 			tempMax = checkerM(from, up, turn);
-			System.out.println();
+			
 			
 			if (tempMax <= max) {
 				
@@ -140,7 +140,7 @@ public class BonzeeRules {
 			valid = true;
 			//System.out.println("Can move down");
 			tempMax = checkerM(from, down, turn);
-			System.out.println();
+			
 			
 			if (tempMax <= max) {
 				tempMax = max;
@@ -159,7 +159,7 @@ public class BonzeeRules {
 			valid = true;
 			//System.out.println("Can move left");
 			tempMax = checkerM(from, left, turn);
-			System.out.println();
+			
 			
 			if (tempMax <= max) {
 				tempMax = max;
@@ -179,7 +179,7 @@ public class BonzeeRules {
 			valid = true;
 			//System.out.println("Can move right");
 			tempMax = checkerM(from, right, turn);
-			System.out.println();
+			
 			
 			if (tempMax <= max) {
 				tempMax = max;
@@ -318,10 +318,10 @@ public class BonzeeRules {
 				
 				String regex = "([A-E]|[a-e])[1-9]";
 	
-				System.out.println("(FROM)Enter Piece that you are at now(ie y = 2, x =5. so enter 25)");
+				System.out.println("(FROM)Enter Piece that you are at now");
 				String inputFrom = k.nextLine();
 				while (!(inputFrom.matches(regex))) {
-					System.out.println("(FROM)Enter Piece that you are at now(ie y = 2, x =5. so enter 25)");
+					System.out.println("(FROM)Enter Piece that you are at now");
 					inputFrom = k.nextLine();
 					over++;
 					if (over >= 1)
@@ -330,10 +330,10 @@ public class BonzeeRules {
 	
 				int moveFrom = inputConverter(inputFrom);
 	
-				System.out.println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)");
+				System.out.println("(TO)Enter Piece you want to move to)");
 				String inputTo = k.nextLine();
 				while (!(inputTo.matches(regex))) {
-					System.out.println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)");
+					System.out.println("(TO)Enter Piece you want to move to");
 					inputTo = k.nextLine();
 					over++;
 					if (over >= 1)
@@ -385,6 +385,7 @@ public class BonzeeRules {
 							if (end == 48) {
 	
 								System.out.println("! AI THINKING DONE !");
+								
 								moved = true;
 							}
 							if (start == 8 && end == 9) {
@@ -413,12 +414,13 @@ public class BonzeeRules {
 			}
 			
 			//System.out.println("Final max is: " + max);
+			/*
 			System.out.println("Max moves: " + maxMove);
 			System.out.println("From moves: " + fMove);
 			System.out.println("To moves: " + tMove);
-
+			*/
 			Object obj = Collections.max(maxMove);
-			System.out.println(obj);
+			//System.out.println(obj);
 
 			int index = maxMove.indexOf(obj);
 			int aiFrom = fMove.get(index);
@@ -427,7 +429,7 @@ public class BonzeeRules {
 			
 			
 			//System.out.println("Index is: " + index);
-			System.out.println("From position is " + aiFrom + " and To position is " + aiTo);
+			System.out.println("From position is " + aiFrom + " and To position is " + aiTo+" with an e(N) of: "+obj);
 			
 			attackMove(aiFrom,aiTo,turn);
 			enterMove(aiFrom, aiTo);
@@ -457,7 +459,8 @@ public class BonzeeRules {
 	
 							if (end == 48) {
 	
-								System.out.println("Done");
+								System.out.println("! AI THINKING DONE !");
+								
 								moved = true;
 							}
 							if (start == 8 && end == 9) {
@@ -486,19 +489,20 @@ public class BonzeeRules {
 			}
 			
 		//	System.out.println("Final max is: " + max);
+			/*
 			System.out.println("Max moves: " + maxMove);
 			System.out.println("From moves: " + fMove);
 			System.out.println("To moves: " + tMove);
-
+			 */
 			Object obj = Collections.max(maxMove);
-			System.out.println(obj);
+			//System.out.println(obj);
 
 			int index = maxMove.indexOf(obj);
 			int aiFrom = fMove.get(index);
 			int aiTo = tMove.get(index);
 
 			//System.out.println("Index is: " + index);
-			System.out.println("From position is " + aiFrom + " and To position is " + aiTo);
+			System.out.println("From position is " + aiFrom + " and To position is " + aiTo+" with an e(N) of: "+obj);
 			
 			attackMove(aiFrom,aiTo,turn);
 			enterMove(aiFrom, aiTo);
@@ -516,10 +520,10 @@ public class BonzeeRules {
 				
 				String regex = "([A-E]|[a-e])[1-9]";
 	
-				System.out.println("(FROM)Enter Piece that you are at now(ie y = 2, x =5. so enter 25)");
+				System.out.println("(FROM)Enter Piece that you are at now");
 				String inputFrom = k.nextLine();
 				while (!(inputFrom.matches(regex))) {
-					System.out.println("(FROM)Enter Piece that you are at now(ie y = 2, x =5. so enter 25)");
+					System.out.println("(FROM)Enter Piece that you are at now");
 					inputFrom = k.nextLine();
 					over++;
 					if (over >= 1)
@@ -528,10 +532,10 @@ public class BonzeeRules {
 	
 				int moveFrom = inputConverter(inputFrom);
 	
-				System.out.println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)");
+				System.out.println("(TO)Enter Piece you want to move to");
 				String inputTo = k.nextLine();
 				while (!(inputTo.matches(regex))) {
-					System.out.println("(TO)Enter Piece you want to move to(ie y = 2, x =5. so enter 25)");
+					System.out.println("(TO)Enter Piece you want to move to");
 					inputTo = k.nextLine();
 					over++;
 					if (over >= 1)
