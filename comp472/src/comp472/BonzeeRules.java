@@ -318,7 +318,7 @@ public class BonzeeRules {
 			System.out.println("Green's turn:\n");
 */
 		
-
+		clearList();
 		//Green's turn
 		System.out.println("Green's turn:\n");
 		turn = 'G';
@@ -433,12 +433,16 @@ public class BonzeeRules {
 			int index = maxMove.indexOf(obj);
 			int aiFrom = fMove.get(index);
 			int aiTo = tMove.get(index);
+			
+			
 
 			System.out.println("Index is: " + index);
 			System.out.println("From position is " + aiFrom + " and To position is " + aiTo);
 			
 			attackMove(aiFrom,aiTo,turn);
 			enterMove(aiFrom, aiTo);
+			
+			
 			
 		}//end human start case
 		else{
@@ -836,6 +840,12 @@ public class BonzeeRules {
 		System.out.println("You have chosen to be green and the AI will be red");
 		}
 			
+	}
+	
+	public void clearList(){
+		maxMove.clear();
+		fMove.clear();
+		tMove.clear();
 	}
 
 }
