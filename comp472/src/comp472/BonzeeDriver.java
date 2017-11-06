@@ -12,8 +12,7 @@ public class BonzeeDriver {
 			n.makeMove();
 			
 			n.printBoard();
-			System.out.println("Green Pieces left: " +n.greenPiece);
-			System.out.println("Red Pieces left: "+n.redPiece);
+			
 		}
 
 	}

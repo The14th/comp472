@@ -93,22 +93,13 @@ public class BonzeeRules {
 	// if it can attack it will take the max pieces it can eat and move that way
 	public void move(int from, int to, char turn) {
 
+		boolean valid = false;
+		
 		// Not sure if I need these for this method
 		int yOri = from / 10;
 		int xOri = from % 10;
 		int yTo = to / 10;
 		int xTo = to % 10;
-
-		for (int i = 0; i < row; i++) {
-			for (int j = 0; j < col; j++) {
-				int x = 0;
-				int y = 0;
-				if (board[y][x] == turn) {
-
-				}
-
-			}
-		}
 
 		System.out.println("Moving from " + from + " to " + to);
 		System.out.println("Validating possible moves..");
@@ -127,87 +118,103 @@ public class BonzeeRules {
 		max = 0;
 		int tempMax = 0;
 		int tempFrom = 0;
-		int tempTo=0;
+		int tempTo= 0;
 
 		if (validateMove(from, up, turn) == false) {
 			System.out.println("No");
 
 		} else {
+			valid = true;
 			System.out.println("Can move up");
-			checkerM(from, up, turn);
+			tempMax = checkerM(from, up, turn);
 			System.out.println();
-
-		}
-
-		if (tempMax < max) {
 			
-			tempMax = max;
-			tempFrom = from;
-			tempTo = up;
+			if (tempMax <= max) {
+				
+				tempMax = max;
+				tempFrom = from;
+				tempTo = up;
+
+			}
 
 		}
+
+		
 
 		if (validateMove(from, down, turn) == false) {
 			System.out.println("No");
 
 		} else {
+			valid = true;
 			System.out.println("Can move down");
-			checkerM(from, down, turn);
+			tempMax = checkerM(from, down, turn);
 			System.out.println();
+			
+			if (tempMax <= max) {
+				tempMax = max;
+				tempFrom = from;
+				tempTo = down;
+
+			}
 
 		}
 
-		if (tempMax < max) {
-			tempMax = max;
-			tempFrom = from;
-			tempTo = down;
-
-		}
 
 		if (validateMove(from, left, turn) == false) {
 			System.out.println("No");
 
 		} else {
+			valid = true;
 			System.out.println("Can move left");
-			checkerM(from, left, turn);
+			tempMax = checkerM(from, left, turn);
 			System.out.println();
+			
+			if (tempMax <= max) {
+				tempMax = max;
+				tempFrom = from;
+				tempTo = left;
+
+			}
 
 		}
 
-		if (tempMax < max) {
-			tempMax = max;
-			tempFrom = from;
-			tempTo = left;
-
-		}
+		
 
 		if (validateMove(from, right, turn) == false) {
 			System.out.println("No");
 
 		} else {
+			valid = true;
 			System.out.println("Can move right");
-			checkerM(from, right, turn);
+			tempMax = checkerM(from, right, turn);
 			System.out.println();
+			
+			if (tempMax <= max) {
+				tempMax = max;
+				tempFrom = from;
+				tempTo=right;
+
+			}
+			
 
 		}
 
-		if (tempMax < max) {
-			tempMax = max;
-			tempFrom = from;
-			tempTo=right;
-
-		}
 		
 
 		System.out.println("Its turn: " + turn);
 		System.out.println(tempMax);
 		System.out.println(tempFrom);
 		System.out.println(tempTo);
-		maxMove.add(tempMax);
+		if (valid){
+			maxMove.add(tempMax);
+		}
+		else{
+			maxMove.add(-1);
+		}
 		fMove.add(tempFrom);
 		tMove.add(tempTo);
 		System.out.println("----------------------------");
-
+		
 	}
 
 	// Not to execute move, just count the pieces it can eat
@@ -320,6 +327,7 @@ public class BonzeeRules {
 		
 		clearList();
 		//Green's turn
+		printNumP();
 		System.out.println("Green's turn:\n");
 		turn = 'G';
 		if (player1 == 'G'){
@@ -368,8 +376,11 @@ public class BonzeeRules {
 				 
 			}//end while (!moved) human turn
 			
+			gameOver(0);
+			
 			//switch turn
 			printBoard();
+			printNumP();
 			System.out.println("Red's turn:\n");
 			turn = 'R';
 			moved = false;
@@ -442,7 +453,7 @@ public class BonzeeRules {
 			attackMove(aiFrom,aiTo,turn);
 			enterMove(aiFrom, aiTo);
 			
-			
+			gameOver(0);
 			
 		}//end human start case
 		else{
@@ -514,8 +525,11 @@ public class BonzeeRules {
 			attackMove(aiFrom,aiTo,turn);
 			enterMove(aiFrom, aiTo);
 			
+			gameOver(0);
+			
 			//switch turn
 			printBoard();
+			printNumP();
 			System.out.println("Red's turn:\n");
 			turn = 'R';
 			moved = false;
@@ -563,6 +577,7 @@ public class BonzeeRules {
 				 
 			}//end while (!moved) human turn
 			
+			gameOver(0);
 		}
 		/*
 		if (turn == 'R')
@@ -571,7 +586,7 @@ public class BonzeeRules {
 			turn = 'R';
 */
 		
-		turn = 'G';
+		//turn = 'G';
 	}
 
 	private int inputConverter(String input) {
@@ -772,11 +787,13 @@ public class BonzeeRules {
 		if (redPiece == 0) {
 			System.out.println("GREEN WINS");
 			System.out.println("GAME OVER");
+			System.exit(0);
 		}
 
 		if (greenPiece == 0) {
 			System.out.println("RED WINS");
 			System.out.println("GAME OVER");
+			System.exit(0);
 		}
 
 		return false;
@@ -846,6 +863,10 @@ public class BonzeeRules {
 		maxMove.clear();
 		fMove.clear();
 		tMove.clear();
+	}
+	public void printNumP(){
+		System.out.println("Green Pieces left: " +greenPiece);
+		System.out.println("Red Pieces left: "+redPiece);
 	}
 
 }
