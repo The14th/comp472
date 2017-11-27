@@ -8,7 +8,10 @@ public class BonzeeRules {
 	private int col = 9;
 	private int defense = 0;
 	private char[][] board;
-	List<Integer> maxMove = new ArrayList<Integer>();
+	private char[][] oldBoard;
+	private char[][] midBoard;
+	private char[][] mid2Board;
+	List<Integer> minimaxMove = new ArrayList<Integer>();
 	List<Integer> fMove = new ArrayList<Integer>();
 	List<Integer> tMove = new ArrayList<Integer>();
 	
@@ -23,12 +26,26 @@ public class BonzeeRules {
 	int greenPiece;
 	boolean next = false;
 	int max;
+	int depth = 0;
+	int tempMax = 0;
+	int tempMin = 1000000;
+	int tempFrom = 0;
+	int tempTo= 0;
+	int hMax = 0;
+	int hMin = 0;
 	
-
+	int rootFrom = 0;
+	int rootTo = 0;
+	
+	boolean valid = false;
+	
 	// Initial settings
 	public BonzeeRules() {
 
 		board = new char[row][col];
+		oldBoard = new char[row][col];
+		midBoard = new char[row][col];
+		mid2Board = new char[row][col];
 		redPiece = 22;
 		greenPiece = 22;
 		turn = 'G';
@@ -94,7 +111,7 @@ public class BonzeeRules {
 	// This method checks all possible moves from a position and determines if
 	// IT can move and
 	// if it can attack it will take the max pieces it can eat and move that way
-	public void hFunc(){	
+	public int hFunc(){	
 		
 		int h=0;
 		for (int i = 0; i < row; i++) {
@@ -134,56 +151,326 @@ public class BonzeeRules {
 			
 		}
 		
+		//+green -red
+		//Green wants MAX h RED wants MIN h
 		h = 100*sumGH + 50*sumGV -100*sumRH -50*sumRV;
-		System.out.println("Total e(N) is: "+h);
 		
+		System.out.println("Total e(N) is: "+h);
 		gVerti.clear();
 		gHori.clear();
 		rVerti.clear();
 		rHori.clear();
 		
+		return h;
+		
 
 	}
-	public void move(int from, int to, char turn) {
+	//public void miniMaxL(int from, int to, char turn){
+	public int miniMaxL(int from){
+				
+		int rTempP = redPiece;
+		int gTempP = greenPiece;
+		
+		depth++;
+		System.out.println("dept" + depth);
+		
+		valid = false;
 
-		boolean valid = false;
-
-		//System.out.println("Moving from " + from + " to " + to);
-		//System.out.println("! AI THINKING !");
-		//System.out.println();
-
-
+		int upleft = from + 10 - 1;
 		// UP meaning down
 		int up = from + 10;
+		
+		int upright = from + 10 - 1;
+		
+		int downleft = from - 10 - 1;
 		// DOWN meaning up
 		int down = from - 10;
+		
+		int downright = from - 10 + 1;
 		// LEFT
 		int left = from - 1;
 		// RIGHT
 		int right = from + 1;
 		
+		//???
 		max = 0;
-		int tempMax = 0;
-		int tempFrom = 0;
-		int tempTo= 0;
 
+		
+		if (validateAI(from, upleft, turn) == false) {
+			//System.out.println("No");
+
+		} else {
+			valid = true;
+			for (int i = 0; i < board.length;i++){
+				midBoard[i] = Arrays.copyOf(board[i], board[i].length);
+			}
+			attackMoveF(from,upleft,turn);
+			enterMove(from, upleft);
+			printBoard();
+			if (depth == 1){
+				rootFrom = from;
+				rootTo = upleft;
+			}
+			if (turn == 'G'){
+				//here
+				if (depth <= 2){
+					turn = 'R';
+					checkAllMove();
+					//hh
+					if (depth == 2){
+						for (int i = 0; i < board.length;i++){
+							board[i] = Arrays.copyOf(midBoard[i], midBoard[i].length);
+						}
+					}
+					turn = 'G';
+				}
+				hMax = hFunc();
+				if (tempMax <= hMax){ 
+					tempMax = hMax;
+					tempFrom = from;
+					tempTo = upleft;
+				}
+			}
+			if (turn == 'R'){
+				if (depth <= 2){
+					turn = 'G';
+					checkAllMove();
+					if (depth == 2){
+						for (int i = 0; i < board.length;i++){
+							board[i] = Arrays.copyOf(midBoard[i], midBoard[i].length);
+						}
+					}
+					turn = 'R';
+				}
+				hMin = hFunc();
+				if (tempMin >= hMin){ 
+					tempMin = hMin;
+					tempFrom = from;
+					tempTo = upleft;
+				}		
+			}
+			
+		}
+		
+		if (validateAI(from, upright, turn) == false) {
+			//System.out.println("No");
+
+		} else {
+			valid = true;
+			for (int i = 0; i < board.length;i++){
+				midBoard[i] = Arrays.copyOf(board[i], board[i].length);
+			}
+			attackMoveF(from,upright,turn);
+			enterMove(from, upright);
+			printBoard();
+			if (depth == 1){
+				rootFrom = from;
+				rootTo = upright;
+			}
+			if (turn == 'G'){
+				if (depth <= 2){
+					turn = 'R';
+					checkAllMove();
+					if (depth == 2){
+						for (int i = 0; i < board.length;i++){
+							board[i] = Arrays.copyOf(midBoard[i], midBoard[i].length);
+						}
+					}
+					turn = 'G';
+				}
+				hMax = hFunc();
+				if (tempMax <= hMax){ 
+					tempMax = hMax;
+					tempFrom = from;
+					tempTo = upright;
+				}
+			}
+			if (turn == 'R'){
+				if (depth <= 2){
+					turn = 'G';
+					checkAllMove();
+					if (depth == 2){
+						for (int i = 0; i < board.length;i++){
+							board[i] = Arrays.copyOf(midBoard[i], midBoard[i].length);
+						}
+					}
+					turn = 'R';
+				}
+				hMin = hFunc();
+				if (tempMin >= hMin){ 
+					tempMin = hMin;
+					tempFrom = from;
+					tempTo = upright;
+				}
+			}
+			//next depth
+			printBoard();
+			
+		}
+		
+		if (validateAI(from, downleft, turn) == false) {
+			//System.out.println("No");
+
+		} else {
+			valid = true;	
+			for (int i = 0; i < board.length;i++){
+				midBoard[i] = Arrays.copyOf(board[i], board[i].length);
+			}
+			attackMoveF(from,downleft,turn);
+			enterMove(from, downleft);
+			printBoard();
+			if (depth == 1){
+				rootFrom = from;
+				rootTo = downleft;
+			}
+			if (turn == 'G'){
+				if (depth <= 2){
+					turn = 'R';
+					checkAllMove();
+					if (depth == 2){
+						for (int i = 0; i < board.length;i++){
+							board[i] = Arrays.copyOf(midBoard[i], midBoard[i].length);
+						}
+					}
+					turn = 'G';
+				}
+				hMax = hFunc();
+				if (tempMax <= hMax){ 
+					tempMax = hMax;
+					tempFrom = from;
+					tempTo = downleft;
+				}
+			}
+			if (turn == 'R'){
+				if (depth <= 2){
+					turn = 'G';
+					checkAllMove();
+					if (depth == 2){
+						for (int i = 0; i < board.length;i++){
+							board[i] = Arrays.copyOf(midBoard[i], midBoard[i].length);
+						}
+					}
+					turn = 'R';
+				}
+				hMin = hFunc();
+				if (tempMin >= hMin){ 
+					tempMin = hMin;
+					tempFrom = from;
+					tempTo = downleft;
+				}
+			}
+			
+		}
+		
+		if (validateAI(from, downright, turn) == false) {
+			//System.out.println("No");
+
+		} else {
+			valid = true;	
+			for (int i = 0; i < board.length;i++){
+				midBoard[i] = Arrays.copyOf(board[i], board[i].length);
+			}
+			attackMoveF(from,downright,turn);
+			enterMove(from, downright);
+			printBoard();
+			if (depth == 1){
+				rootFrom = from;
+				rootTo = downright;
+			}
+			if (turn == 'G'){
+				if (depth <= 2){
+					turn = 'R';
+					checkAllMove();
+					if (depth == 2){
+						for (int i = 0; i < board.length;i++){
+							board[i] = Arrays.copyOf(midBoard[i], midBoard[i].length);
+						}
+					}
+					turn = 'G';
+				}
+				//here1
+				else{
+					hMax = hFunc();
+				}
+				if (tempMax <= hMax){ 
+					tempMax = hMax;
+					tempFrom = from;
+					tempTo = downright;
+				}
+			}
+			if (turn == 'R'){
+				if (depth <= 2){
+					turn = 'G';
+					checkAllMove();
+					if (depth == 2){
+						for (int i = 0; i < board.length;i++){
+							board[i] = Arrays.copyOf(midBoard[i], midBoard[i].length);
+						}
+					}
+					turn = 'R';
+				}
+				hMin = hFunc();
+				if (tempMin >= hMin){ 
+					tempMin = hMin;
+					tempFrom = from;
+					tempTo = downright;
+				}
+			}
+			
+		}
+		
 		if (validateAI(from, up, turn) == false) {
 			//System.out.println("No");
 
 		} else {
 			valid = true;
-			//System.out.println("Can move up");
-			tempMax = checkerM(from, up, turn);
-			
-			
-			if (tempMax <= max) {
-				
-				tempMax = max;
-				tempFrom = from;
-				tempTo = up;
-
+			for (int i = 0; i < board.length;i++){
+				midBoard[i] = Arrays.copyOf(board[i], board[i].length);
 			}
-
+			attackMoveF(from,up,turn);
+			enterMove(from, up);
+			printBoard();
+			if (depth == 1){
+				rootFrom = from;
+				rootTo = up;
+			}
+			if (turn == 'G'){
+				if (depth <= 2){
+					turn = 'R';
+					checkAllMove();
+					if (depth == 2){
+						for (int i = 0; i < board.length;i++){
+							board[i] = Arrays.copyOf(midBoard[i], midBoard[i].length);
+						}
+					}
+					turn = 'G';
+				}
+				hMax = hFunc();
+				if (tempMax <= hMax){ 
+					tempMax = hMax;
+					tempFrom = from;
+					tempTo = up;
+				}
+			}
+			if (turn == 'R'){
+				if (depth <= 2){
+					turn = 'G';
+					checkAllMove();
+					if (depth == 2){
+						for (int i = 0; i < board.length;i++){
+							board[i] = Arrays.copyOf(midBoard[i], midBoard[i].length);
+						}
+					}
+					turn = 'R';
+				}
+				hMin = hFunc();
+				if (tempMin >= hMin){ 
+					tempMin = hMin;
+					tempFrom = from;
+					tempTo = up;
+				}
+			}
+			
 		}
 
 		
@@ -193,15 +480,52 @@ public class BonzeeRules {
 
 		} else {
 			valid = true;
+			for (int i = 0; i < board.length;i++){
+				midBoard[i] = Arrays.copyOf(board[i], board[i].length);
+			}
 			//System.out.println("Can move down");
-			tempMax = checkerM(from, down, turn);
-			
-			
-			if (tempMax <= max) {
-				tempMax = max;
-				tempFrom = from;
-				tempTo = down;
-
+			attackMoveF(from,down,turn);
+			enterMove(from, down);
+			printBoard();
+			if (depth == 1){
+				rootFrom = from;
+				rootTo = down;
+			}
+			if (turn == 'G'){
+				if (depth <= 2){
+					turn = 'R';
+					checkAllMove();
+					if (depth == 2){
+						for (int i = 0; i < board.length;i++){
+							board[i] = Arrays.copyOf(midBoard[i], midBoard[i].length);
+						}
+					}
+					turn = 'G';
+				}
+				hMax = hFunc();
+				if (tempMax <= hMax){ 
+					tempMax = hMax;
+					tempFrom = from;
+					tempTo = down;
+				}
+			}
+			if (turn == 'R'){
+				if (depth <= 2){
+					turn = 'G';
+					checkAllMove();
+					if (depth == 2){
+						for (int i = 0; i < board.length;i++){
+							board[i] = Arrays.copyOf(midBoard[i], midBoard[i].length);
+						}
+					}
+					turn = 'R';
+				}
+				hMin = hFunc();
+				if (tempMin >= hMin){ 
+					tempMin = hMin;
+					tempFrom = from;
+					tempTo = down;
+				}
 			}
 
 		}
@@ -212,16 +536,54 @@ public class BonzeeRules {
 
 		} else {
 			valid = true;
-			//System.out.println("Can move left");
-			tempMax = checkerM(from, left, turn);
-			
-			
-			if (tempMax <= max) {
-				tempMax = max;
-				tempFrom = from;
-				tempTo = left;
-
+			for (int i = 0; i < board.length;i++){
+				midBoard[i] = Arrays.copyOf(board[i], board[i].length);
 			}
+			//System.out.println("Can move left");
+			attackMoveF(from,left,turn);
+			enterMove(from, left);
+			printBoard();
+			if (depth == 1){
+				rootFrom = from;
+				rootTo = left;
+			}
+			if (turn == 'G'){
+				if (depth <= 2){
+					turn = 'R';
+					checkAllMove();
+					if (depth == 2){
+						for (int i = 0; i < board.length;i++){
+							board[i] = Arrays.copyOf(midBoard[i], midBoard[i].length);
+						}
+					}
+					turn = 'G';
+				}
+				hMax = hFunc();
+				if (tempMax <= hMax){ 
+					tempMax = hMax;
+					tempFrom = from;
+					tempTo = left;
+				}
+			}
+			if (turn == 'R'){
+				if (depth <= 2){
+					turn = 'G';
+					checkAllMove();
+					if (depth == 2){
+						for (int i = 0; i < board.length;i++){
+							board[i] = Arrays.copyOf(midBoard[i], midBoard[i].length);
+						}
+					}
+					turn = 'R';
+				}
+				hMin = hFunc();
+				if (tempMin >= hMin){ 
+					tempMin = hMin;
+					tempFrom = from;
+					tempTo = left;
+				}
+			}
+			
 
 		}
 
@@ -232,35 +594,105 @@ public class BonzeeRules {
 
 		} else {
 			valid = true;
-			//System.out.println("Can move right");
-			tempMax = checkerM(from, right, turn);
-			
-			
-			if (tempMax <= max) {
-				tempMax = max;
-				tempFrom = from;
-				tempTo=right;
-
+			for (int i = 0; i < board.length;i++){
+				midBoard[i] = Arrays.copyOf(board[i], board[i].length);
 			}
-			
+			//System.out.println("Can move right");
 
+			attackMoveF(from,right,turn);
+			enterMove(from, right);
+			printBoard();
+			if (depth == 1){
+				rootFrom = from;
+				rootTo = right;
+			}
+			if (turn == 'G'){
+				System.out.println("Can move right");
+				if (depth <= 2){
+					turn = 'R';
+					checkAllMove();
+					if (depth == 2){
+						for (int i = 0; i < board.length;i++){
+							board[i] = Arrays.copyOf(midBoard[i], midBoard[i].length);
+						}
+					}
+					turn = 'G';
+				}
+				hMax = hFunc();
+				if (tempMax <= hMax){ 
+					tempMax = hMax;
+					tempFrom = from;
+					tempTo = right;
+				}
+			}
+			if (turn == 'R'){
+				if (depth <= 2){
+					turn = 'G';
+					checkAllMove();
+					if (depth == 2){
+						for (int i = 0; i < board.length;i++){
+							board[i] = Arrays.copyOf(midBoard[i], midBoard[i].length);
+						}
+					}
+					turn = 'R';
+				}
+				hMin = hFunc();
+				if (tempMin >= hMin){ 
+					tempMin = hMin;
+					tempFrom = from;
+					tempTo = right;
+				}
+			}
 		}
 
-		
-
-		//System.out.println("Its turn: " + turn);
-		//System.out.println(tempMax);
-		//System.out.println(tempFrom);
-		//System.out.println(tempTo);
-		if (valid){
-			maxMove.add(tempMax);
+		if (depth == 1){
+			for (int i = 0; i < board.length;i++){
+				board[i] = Arrays.copyOf(oldBoard[i], oldBoard[i].length);
+			}
+			//board = oldBoard.clone();
+			redPiece = rTempP;
+			greenPiece = gTempP;
 		}
-		else{
-			maxMove.add(-1);
-		}
-		fMove.add(tempFrom);
-		tMove.add(tempTo);
 		//System.out.println("----------------------------");
+		depth--;
+		
+		return 0;
+	}
+
+	//public void miniMax(int from, int to) {
+	public void miniMax(int from) {
+		
+		//miniMaxL(from, to);
+		miniMaxL(from);
+		
+		if (depth == 2){
+			if (valid){
+				//midbo
+				for (int i = 0; i < board.length;i++){
+					board[i] = Arrays.copyOf(mid2Board[i], mid2Board[i].length);
+				}
+				System.out.println("idiot");
+				printBoard();
+				System.out.print("oy");
+				if (turn == 'G')
+					minimaxMove.add(tempMax);
+				if (turn == 'R')
+					minimaxMove.add(tempMin);
+				fMove.add(rootFrom);
+				tMove.add(rootTo);
+			}
+			/*
+			else{
+				if (turn == 'G')
+					minimaxMove.add(-1);
+				if (turn == 'R')
+					minimaxMove.add(1000000000);
+				
+			}*/
+		}
+		
+		
+		//depth = 0;
 		
 	}
 
@@ -356,6 +788,11 @@ public class BonzeeRules {
 
 	// Intiates the move entered
 	public void makeMove() {
+		
+		
+		for (int i = 0; i < board.length;i++){
+			oldBoard[i] = Arrays.copyOf(board[i], board[i].length);
+		}
 		int over = 0;
 
 		Scanner k = new Scanner(System.in);
@@ -366,11 +803,11 @@ public class BonzeeRules {
 		printNumP();
 		System.out.println("Green's turn:\n");
 		turn = 'G';
+		//human start
 		if (player1 == 'G'){
 			boolean moved = false;
 			while (!moved) {
-							
-				
+
 				String regex = "([A-E]|[a-e])[1-9]";
 	
 				System.out.println("(FROM)Enter Piece that you are at now");
@@ -414,145 +851,45 @@ public class BonzeeRules {
 			gameOver(0);
 			
 			//switch turn
+			for (int i = 0; i < board.length;i++){
+				oldBoard[i] = Arrays.copyOf(board[i], board[i].length);
+			}
 			printBoard();
 			printNumP();
 			System.out.println("Red's turn:\n");
 			turn = 'R';
-			moved = false;
-			while (!moved) {
-				
-				// AI MOVE
-				int start = 00;
-				int end = 01;
-
-	
-					for (int i = 0; i < row; i++) {
-						for (int j = 0; j < col; j++) {
-	
-							if (board[i][j] == turn) {
-							
-	
-								//System.out.println("Current max is: " + max);
-								move(start, end, turn);
-	
-							}
-	
-							if (end == 48) {
-	
-								System.out.println("! AI THINKING DONE !");
-								
-								moved = true;
-							}
-							if (start == 8 && end == 9) {
-	
-								start = 00;
-								end = 01;
-								end = end + 10;
-							} else if (start == 18 && end == 19) {
-								start = 00;
-								end = 01;
-								end = end + 20;
-							} else if (start == 28 && end == 29) {
-								start = 00;
-								end = 01;
-								end = end + 30;
-							} else if (start == 38 && end == 39) {
-								start = 00;
-								end = 01;
-								end = end + 40;
-							} else {
-								start = end;
-								end = start + 1;
-							}
-						}
-					}
-			}
+			checkAllMove();
 			
-			//System.out.println("Final max is: " + max);
-			/*
-			System.out.println("Max moves: " + maxMove);
-			System.out.println("From moves: " + fMove);
-			System.out.println("To moves: " + tMove);
-			*/
-			Object obj = Collections.max(maxMove);
+			Object obj;
+			if (player2 == 'G')
+				obj = Collections.max(minimaxMove);
+			else
+				obj = Collections.min(minimaxMove);
 			//System.out.println(obj);
 
-			int index = maxMove.indexOf(obj);
+			int index = minimaxMove.indexOf(obj);
 			int aiFrom = fMove.get(index);
 			int aiTo = tMove.get(index);
 		
-			
-			
-			//System.out.println("Index is: " + index);
 			System.out.println("From position is " + aiFrom + " and To position is " + aiTo);
 			
 			attackMove(aiFrom,aiTo,turn);
 			enterMove(aiFrom, aiTo);
+			
+			hFunc();
 			
 			gameOver(0);
 			
 		}//end human start case
+		
+		//AI start
 		else{
-			boolean moved = false;
-			while (!moved) {
-			
-				// AI MOVE
-				int start = 00;
-				int end = 01;
-			
-	
-					for (int i = 0; i < row; i++) {
-						for (int j = 0; j < col; j++) {
-	
-							if (board[i][j] == turn) {
-							
-	
-								//System.out.println("Current max is: " + max);
-								move(start, end, turn);
-	
-							}
-	
-							if (end == 48) {
-	
-								System.out.println("! AI THINKING DONE !");
-								
-								moved = true;
-							}
-							if (start == 8 && end == 9) {
-	
-								start = 00;
-								end = 01;
-								end = end + 10;
-							} else if (start == 18 && end == 19) {
-								start = 00;
-								end = 01;
-								end = end + 20;
-							} else if (start == 28 && end == 29) {
-								start = 00;
-								end = 01;
-								end = end + 30;
-							} else if (start == 38 && end == 39) {
-								start = 00;
-								end = 01;
-								end = end + 40;
-							} else {
-								start = end;
-								end = start + 1;
-							}
-						}
-					}
-			}
-			
-		//	System.out.println("Final max is: " + max);
-			/*
-			System.out.println("Max moves: " + maxMove);
-			System.out.println("From moves: " + fMove);
-			System.out.println("To moves: " + tMove);
-			 */
-			Object obj = Collections.max(maxMove);
+			checkAllMove();
+
+			Object obj = Collections.max(minimaxMove);
 			//System.out.println(obj);
 
-			int index = maxMove.indexOf(obj);
+			int index = minimaxMove.indexOf(obj);
 			int aiFrom = fMove.get(index);
 			int aiTo = tMove.get(index);
 
@@ -561,15 +898,19 @@ public class BonzeeRules {
 			
 			attackMove(aiFrom,aiTo,turn);
 			enterMove(aiFrom, aiTo);
+			hFunc();
 			
 			gameOver(0);
 			
 			//switch turn
+			for (int i = 0; i < board.length;i++){
+				oldBoard[i] = Arrays.copyOf(board[i], board[i].length);
+			}
 			printBoard();
 			printNumP();
 			System.out.println("Red's turn:\n");
 			turn = 'R';
-			moved = false;
+			boolean moved = false;
 			while (!moved) {
 							
 				
@@ -615,7 +956,73 @@ public class BonzeeRules {
 			
 			gameOver(0);
 		}
+		
+		tempMax = 0;
+		tempMin = 1000000;
+		tempFrom = 0;
+		tempTo= 0;
+		hMax = 0;
+		hMin = 0;
+		
+		rootFrom = 0;
+		rootTo = 0;
 	}
+
+	private void checkAllMove() {
+		
+		
+		for (int i = 0; i < board.length;i++){
+			mid2Board[i] = Arrays.copyOf(board[i], board[i].length);
+		}
+			System.out.println("deptddd" + depth);
+			// AI MOVE
+			//int start = 00;
+			//int end = 01;
+
+
+				for (int i = 0; i < row; i++) {
+					for (int j = 0; j < col; j++) {
+
+						if (board[i][j] == turn) {
+						
+
+							//System.out.println("Current max is: " + max);
+							//miniMax(start, end);
+							int from = i* 10 + j;
+							miniMax(from);
+							
+						}
+/*
+						if (end == 48) {
+
+							System.out.println("! AI THINKING DONE !");
+							
+						}
+						if (start == 8 && end == 9) {
+
+							start = 00;
+							end = 01;
+							end = end + 10;
+						} else if (start == 18 && end == 19) {
+							start = 00;
+							end = 01;
+							end = end + 20;
+						} else if (start == 28 && end == 29) {
+							start = 00;
+							end = 01;
+							end = end + 30;
+						} else if (start == 38 && end == 39) {
+							start = 00;
+							end = 01;
+							end = end + 40;
+						} else {
+							start = end;
+							end = start + 1;
+						}*/
+					}
+				}
+		}
+	
 
 	private int inputConverter(String input) {
 	
@@ -745,6 +1152,86 @@ public class BonzeeRules {
 		}
 	}
 
+	public void attackMoveF(int from, int to, char color) {
+
+		int deathC = 0;
+		char enemy = 'a';
+		if (color == 'G') {
+			enemy = 'R';
+		} else {
+			enemy = 'G';
+		}
+		boolean stop = false;
+		boolean forward = false;
+		int directionY = 0; // -1: up/1: down
+		int directionX = 0; // -1: left/1: right;
+		int yOri = from / 10;
+		int xOri = from % 10;
+		int xAttack = 0;
+		int yAttack = 0;
+
+		int yTo = to / 10;
+		int xTo = to % 10;
+
+		if (yTo > yOri) {
+			directionY = 1;
+		} else if (yTo < yOri) {
+			directionY = -1;
+		}
+		if (xTo > xOri) {
+			directionX = 1;
+		} else if (xTo < xOri) {
+			directionX = -1;
+		}
+		yAttack = yTo + directionY;
+		xAttack = xTo + directionX;
+		// forward attack
+		while (!stop) {
+			if (!(yAttack < 0 || yAttack > 4 || xAttack < 0 || xAttack > 8)) {
+				if (board[yAttack][xAttack] == enemy) {
+					deathC++;
+					forward = true;
+					board[yAttack][xAttack] = '_';
+				} else {
+					stop = true;
+				}
+				yAttack += directionY;
+				xAttack += directionX;
+			} else {
+				stop = true;
+			}
+		}
+		// backwards attack
+		stop = false;
+		directionX = -directionX;
+		directionY = -directionY;
+		yAttack = yOri + directionY;
+		xAttack = xOri + directionX;
+
+		if (forward == false) {
+			while (!stop) {
+				if (!(yAttack < 0 || yAttack > 4 || xAttack < 0 || xAttack > 8)) {
+					if (board[yAttack][xAttack] == enemy) {
+						deathC++;
+						board[yAttack][xAttack] = '_';
+					} else {
+						stop = true;
+					}
+					yAttack += directionY;
+					xAttack += directionX;
+				} else {
+					stop = true;
+				}
+			}
+		}
+		if (enemy == 'G') {
+			greenPiece -= deathC;
+		} else {
+			redPiece -= deathC;
+		}
+		System.out.println("Finished attack/defense phase");
+	}
+	
 	public boolean validateMove(int from, int to, char color) {
 		int yOri = from / 10;
 		int xOri = from % 10;
@@ -934,7 +1421,7 @@ public class BonzeeRules {
 	}
 	
 	public void clearList(){
-		maxMove.clear();
+		minimaxMove.clear();
 		fMove.clear();
 		tMove.clear();
 	}
