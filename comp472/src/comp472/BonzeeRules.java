@@ -155,7 +155,7 @@ public class BonzeeRules {
 		//Green wants MAX h RED wants MIN h
 		h = 100*sumGH + 50*sumGV -100*sumRH -50*sumRV;
 		
-		System.out.println("Total e(N) is: "+h);
+		//System.out.println("Total e(N) is: "+h);
 		gVerti.clear();
 		gHori.clear();
 		rVerti.clear();
@@ -172,7 +172,7 @@ public class BonzeeRules {
 		int gTempP = greenPiece;
 		
 		depth++;
-		System.out.println("dept" + depth);
+		//System.out.println("dept" + depth);
 		
 		valid = false;
 
@@ -206,7 +206,7 @@ public class BonzeeRules {
 			}
 			attackMoveF(from,upleft,turn);
 			enterMove(from, upleft);
-			printBoard();
+			//printBoard();
 			if (depth == 1){
 				rootFrom = from;
 				rootTo = upleft;
@@ -262,7 +262,7 @@ public class BonzeeRules {
 			}
 			attackMoveF(from,upright,turn);
 			enterMove(from, upright);
-			printBoard();
+			//printBoard();
 			if (depth == 1){
 				rootFrom = from;
 				rootTo = upright;
@@ -304,7 +304,7 @@ public class BonzeeRules {
 				}
 			}
 			//next depth
-			printBoard();
+			//printBoard();
 			
 		}
 		
@@ -318,7 +318,7 @@ public class BonzeeRules {
 			}
 			attackMoveF(from,downleft,turn);
 			enterMove(from, downleft);
-			printBoard();
+		//	printBoard();
 			if (depth == 1){
 				rootFrom = from;
 				rootTo = downleft;
@@ -372,7 +372,7 @@ public class BonzeeRules {
 			}
 			attackMoveF(from,downright,turn);
 			enterMove(from, downright);
-			printBoard();
+			//printBoard();
 			if (depth == 1){
 				rootFrom = from;
 				rootTo = downright;
@@ -429,7 +429,7 @@ public class BonzeeRules {
 			}
 			attackMoveF(from,up,turn);
 			enterMove(from, up);
-			printBoard();
+			//printBoard();
 			if (depth == 1){
 				rootFrom = from;
 				rootTo = up;
@@ -486,7 +486,7 @@ public class BonzeeRules {
 			//System.out.println("Can move down");
 			attackMoveF(from,down,turn);
 			enterMove(from, down);
-			printBoard();
+			//printBoard();
 			if (depth == 1){
 				rootFrom = from;
 				rootTo = down;
@@ -542,7 +542,7 @@ public class BonzeeRules {
 			//System.out.println("Can move left");
 			attackMoveF(from,left,turn);
 			enterMove(from, left);
-			printBoard();
+			//printBoard();
 			if (depth == 1){
 				rootFrom = from;
 				rootTo = left;
@@ -601,13 +601,13 @@ public class BonzeeRules {
 
 			attackMoveF(from,right,turn);
 			enterMove(from, right);
-			printBoard();
+		//	printBoard();
 			if (depth == 1){
 				rootFrom = from;
 				rootTo = right;
 			}
 			if (turn == 'G'){
-				System.out.println("Can move right");
+				//System.out.println("Can move right");
 				if (depth <= 2){
 					turn = 'R';
 					checkAllMove();
@@ -671,9 +671,9 @@ public class BonzeeRules {
 				for (int i = 0; i < board.length;i++){
 					board[i] = Arrays.copyOf(mid2Board[i], mid2Board[i].length);
 				}
-				System.out.println("idiot");
-				printBoard();
-				System.out.print("oy");
+				//System.out.println("idiot");
+				//printBoard();
+				//System.out.print("oy");
 				if (turn == 'G')
 					minimaxMove.add(tempMax);
 				if (turn == 'R')
@@ -871,7 +871,8 @@ public class BonzeeRules {
 			int aiFrom = fMove.get(index);
 			int aiTo = tMove.get(index);
 		
-			System.out.println("From position is " + aiFrom + " and To position is " + aiTo);
+			System.out.println("From position is " + inputDeconverter(aiFrom) + " and To position is " + inputDeconverter(aiTo));
+			System.out.println(aiFrom+ " " + aiTo );
 			
 			attackMove(aiFrom,aiTo,turn);
 			enterMove(aiFrom, aiTo);
@@ -894,7 +895,8 @@ public class BonzeeRules {
 			int aiTo = tMove.get(index);
 
 			//System.out.println("Index is: " + index);
-			System.out.println("From position is " + aiFrom + " and To position is " + aiTo);
+			System.out.println("From position is " + inputDeconverter(aiFrom) + " and To position is " + inputDeconverter(aiTo));
+			System.out.println(aiFrom+ " " + aiTo );
 			
 			attackMove(aiFrom,aiTo,turn);
 			enterMove(aiFrom, aiTo);
@@ -974,7 +976,7 @@ public class BonzeeRules {
 		for (int i = 0; i < board.length;i++){
 			mid2Board[i] = Arrays.copyOf(board[i], board[i].length);
 		}
-			System.out.println("deptddd" + depth);
+			//System.out.println("deptddd" + depth);
 			// AI MOVE
 			//int start = 00;
 			//int end = 01;
@@ -1054,6 +1056,37 @@ public class BonzeeRules {
 		int move = y * 10 + x;
 
 
+		return move;
+	}
+	
+	private String inputDeconverter(int input){
+		
+		String move;
+		char letter = ' ';
+		
+		int y = input / 10;
+		int x = (input % 10)+1;
+		
+		if(y == 0){
+			letter = 'A';
+		}
+		if(y == 1){
+			letter = 'B';
+		}
+		if(y == 2){
+			letter = 'C';
+		}
+		if(y == 3){
+			letter = 'D';
+		}
+		if(y == 4){
+			letter = 'E';
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(letter);
+		sb.append(x);
+		move = sb.toString();
 		return move;
 	}
 
@@ -1141,11 +1174,11 @@ public class BonzeeRules {
 
 		if (def) {
 			defense++;
-			System.out.println("Defensive move");
+		//	System.out.println("Defensive move");
 		} else {
 			defense = 0;
 		}
-		System.out.println("Finished attack/defense phase");
+		//System.out.println("Finished attack/defense phase");
 
 		if (defense >= 10) {
 			gameOver(2);
@@ -1229,7 +1262,7 @@ public class BonzeeRules {
 		} else {
 			redPiece -= deathC;
 		}
-		System.out.println("Finished attack/defense phase");
+		//System.out.println("Finished attack/defense phase");
 	}
 	
 	public boolean validateMove(int from, int to, char color) {
