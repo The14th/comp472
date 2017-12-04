@@ -65,31 +65,6 @@ public class BonzeeRules {
 			  board[3][j] = 'G'; board[4][j] = 'G'; board[2][0] = 'G';
 			  board[2][1] = 'G'; board[2][2] = 'G'; board[2][3] = 'G';
 			  
-			/*
-			// Testing
-			board[0][0] = 'G';
-		//	board[0][2] = 'G';
-		//	board[0][7] = 'G';
-			board[0][2] = 'R';
-			board[0][3] = 'R';
-			board[2][0] = 'R';
-		//	board[2][2] = 'R';
-			board[1][5] = 'G';
-			// board[2][4] = 'R';
-			// board[2][5] = 'R';
-			// board[0][5] = 'G';
-			// board[2][2] = 'G';
-			// board[2][3] = 'G';
-			 board[3][5] = 'R';
-			// board[2][7] = 'G';
-			// board[4][3] = 'G';
-			// board[4][5] = 'G';
-			// board[4][7] = 'G';
-			 board[0][8] = 'G';
-			 board[2][8] = 'R';
-			 board[3][8] = 'R';
-			 board[4][8] = 'R';
-			  */
 
 		}
 	}
@@ -165,7 +140,7 @@ public class BonzeeRules {
 		
 
 	}
-	//public void miniMaxL(int from, int to, char turn){
+	
 	public int miniMaxL(int from){
 				
 		int rTempP = redPiece;
@@ -659,21 +634,19 @@ public class BonzeeRules {
 		return 0;
 	}
 
-	//public void miniMax(int from, int to) {
+	
 	public void miniMax(int from) {
 		
-		//miniMaxL(from, to);
+		
 		miniMaxL(from);
 		
 		if (depth == 2){
 			if (valid){
-				//midbo
+				
 				for (int i = 0; i < board.length;i++){
 					board[i] = Arrays.copyOf(mid2Board[i], mid2Board[i].length);
 				}
-				//System.out.println("idiot");
-				//printBoard();
-				//System.out.print("oy");
+			
 				if (turn == 'G')
 					minimaxMove.add(tempMax);
 				if (turn == 'R')
@@ -681,18 +654,11 @@ public class BonzeeRules {
 				fMove.add(rootFrom);
 				tMove.add(rootTo);
 			}
-			/*
-			else{
-				if (turn == 'G')
-					minimaxMove.add(-1);
-				if (turn == 'R')
-					minimaxMove.add(1000000000);
-				
-			}*/
+	
 		}
 		
 		
-		//depth = 0;
+		
 		
 	}
 
@@ -976,11 +942,7 @@ public class BonzeeRules {
 		for (int i = 0; i < board.length;i++){
 			mid2Board[i] = Arrays.copyOf(board[i], board[i].length);
 		}
-			//System.out.println("deptddd" + depth);
-			// AI MOVE
-			//int start = 00;
-			//int end = 01;
-
+			
 
 				for (int i = 0; i < row; i++) {
 					for (int j = 0; j < col; j++) {
@@ -988,39 +950,12 @@ public class BonzeeRules {
 						if (board[i][j] == turn) {
 						
 
-							//System.out.println("Current max is: " + max);
-							//miniMax(start, end);
+							
 							int from = i* 10 + j;
 							miniMax(from);
 							
 						}
-/*
-						if (end == 48) {
 
-							System.out.println("! AI THINKING DONE !");
-							
-						}
-						if (start == 8 && end == 9) {
-
-							start = 00;
-							end = 01;
-							end = end + 10;
-						} else if (start == 18 && end == 19) {
-							start = 00;
-							end = 01;
-							end = end + 20;
-						} else if (start == 28 && end == 29) {
-							start = 00;
-							end = 01;
-							end = end + 30;
-						} else if (start == 38 && end == 39) {
-							start = 00;
-							end = 01;
-							end = end + 40;
-						} else {
-							start = end;
-							end = start + 1;
-						}*/
 					}
 				}
 		}
